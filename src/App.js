@@ -1,9 +1,19 @@
+// COMPONENTS
+import Menu from "./pages/Menu";
+
+// STYLES
 import "./App.css"
+
+// ROUTING
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <h1>TAPPO App Baseline</h1>
+      <Routes>
+        <Route path="/menu/:tableNumber" element={<Menu />} />
+        <Route path="/menu/" element={<Menu />} />
+      </Routes>
     </div>
   );
 }
