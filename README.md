@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+readme_content = """# ⚡ TAPPO — Smart Table Ordering SaaS (MVP)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> **TAPPO** هو نظام سحابي متطور (SaaS) يهدف لإعادة تعريف تجربة الضيافة داخل المقاهي والمطاعم عبر أتمتة عملية الطلب من الطاولة مباشرة باستخدام تقنيات الـ **QR Code** و **NFC**، مع توفير إدارة لحظية للطلبات وتحليلات أداء شاسعة.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📂 مسار المشروع وهيكل المجلدات (Project Architecture)
 
-### `npm start`
+| المجلد / الملف | الوصف والمسؤولية |
+| :--- | :--- |
+| 📁 **`Tappo/`** | المجلد الرئيسي الحاضن للمشروع ككل |
+| └── 📁 **`tappo-v01/`** | مجلد تطبيق الـ React المعتمد للإصدار الأولي (MVP) |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/components/`** | المكونات المعاد استخدامها (Buttons, Modals, Cards, Popups) |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/pages/`** | واجهات النظام الرئيسية (Menu, MerchantDashboard, AdminPanel) |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/context/`** | إدارة الحالة العامة وتمرير البيانات (CartContext, OrderContext) |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/reducers/`** | إدارة الحالات المعقدة بنظافة عبر `useReducer` |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/data/`** | البيانات التجريبية المبدئية (`mockData.js`) قبل ربط الـ API |
+| &nbsp;&nbsp;&nbsp;&nbsp;└── 📁 **`public/`** | الأصول العامة والملفات الثابتة (`index.html`, `manifest.json`) |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 💎 الميزات الأساسية ونطاق النظام (Core Features Scope)
 
-### `npm test`
+### 📱 1. المنيو التفاعلي والطلب الذكي (Smart Menu & Ordering)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| الميزة | نوع التكنولوجيا | الوصف الشامل والهدف التشغيلي |
+| :--- | :---: | :--- |
+| 🔗 **الطلب المباشر** | `QR / NFC` | مسح الرمز من الطاولة للوصول الفوري للمنيو والطلب بدون تسجيل حساب |
+| 🪟 **التفاصيل المنبثقة** | `MUI Dialog` | نافذة منبثقة تفاعلية عند الضغط على الكارت تعرض المكونات والأسعار |
+| ⚠️ **تحذيرات الحساسية** | `Allergen System` | إشارات تحذير بصرية مدمجة على الأصناف التي تحوي مواد مسببة للحساسية |
+| 🔔 **استدعاء الجرسون** | `Instant Alert` | زر مخصص لطلب الخدمة أو الفاتورة مباشرة برقم الطاولة |
+| 🧠 **مُحرك الاقتراحات** | `Cross-Selling Engine` | تحليل السلة عند التوجه لتأكيد الطلب واقتراح أصناف مكملة لزيادة مبيعات المقهى |
+| 💬 **آراء العملاء** | `Private Feedback` | تقييمات وملاحظات مغلقة تُرسل لوحة التحكم للإدارة فقط دون نشرها علناً |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🖥️ 2. لوحة تحكم المقهى اللحظية (Merchant Dashboard)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| المرحلة / الخدمة | التنبيه المرفق | آلية العمل والوظيفة |
+| :--- | :---: | :--- |
+| 🟢 **1. قبول الطلب** | 🔊 صوتي + 👁️ مرئي | استقبال الطلب اللحظي المنظم ببطاقات تحمل رقم الطاولة واعتماده |
+| 🟡 **2. جاري التحضير** | 👁️ إشعار مرئي | نقل الطلب إلى قسم التحضير بالمطبخ / البار |
+| 🔵 **3. الطلب جاهز** | 🔊 تنبيه اكتمال | إشعار فريق الخدمة بإنهاء التحضير وتسليمه للطاولة |
+| 📜 **أرشيف اليوم** | 💾 حفظ تلقائي | تبويب خاص يحفظ سجل كافة معاملات اليوم للرجوع إليها |
+| 🔐 **نظام الأمان** | 🔑 Credentials | تسجيل دخول مخصص ببيانات تُدار وتُحدد من لوحة الإدارة العامة |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### 📊 3. لوحة الإدارة العامة والتحليلات (Admin Panel & Analytics)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| المؤشر / الرسم البياني | نوع الفلترة | القيمة المستفادة والتحليل |
+| :--- | :---: | :--- |
+| 📈 **المخطط البياني** | `اليوم / الأسبوع` | رسم بياني متطور يوضح سلوك المبيعات والنمو خلال الفترات |
+| ⏰ **تحليل أوقات الذروة** | `Hourly / Daily` | تحديد أكثر ساعة نشاطاً باليوم وأكثر يوم نشاطاً بالأسبوع |
+| 🔢 **إجمالي الطلبات** | `KPI Card` | عدد الطلبات المنجزة خلال الفترة المحددة |
+| 👥 **إجمالي العملاء** | `KPI Card` | عدد العملاء الفريدين (تأسيس لبرامج الولاء مستقبلاً) |
+| 💰 **متوسط سعر الطلب** | `KPI Card` | معدل إنفاق العميل في المرة الواحدة (Average Order Value) |
+| 🏆 **الصنف الأكثر طلباً** | `KPI Card` | صنف الـ Best Seller الأكثر مبيعاً بالمقهى |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🛠️ حزمة التقنيات والمكتبات (Tech Stack)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| التقنية / المكتبة | الإصدار / الأداة | الغرض والاستخدام العملي |
+| :--- | :---: | :--- |
+| **Frontend Core** | `React.js` | البناء الهيكلي المعتمد على Functional Components |
+| **UI Library** | `Material UI (MUI)` | التصميم المتناسق، الأيقونات الاحترافية، والكومبوننتس الجاهزة |
+| **State Management** | `useReducer + Context` | إدارة الحالات المعقدة (السلة ودورة الطلبات) بنظافة |
+| **Routing** | `React Router v6` | الربط بين صفحات المنيو، لوحة التحكم، والـ Admin |
+| **Data Format** | `JSON / JS Objects` | هيكلة الـ Mock Data المبدئية للواجهات قبل ربط السيرفر |
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🚀 خطة التشغيل والإعداد المحلي (Local Setup)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+# 1. الانتقال إلى مجلد المشروع الرئيسي
+cd Tappo/tappo-v01
 
-### Code Splitting
+# 2. تثبيت الحزم والتبعيات الأساسية
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# 3. تثبيت مكتبات Material UI والأيقونات
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# 4. تشغيل خادم التطوير المحلي
+npm start
