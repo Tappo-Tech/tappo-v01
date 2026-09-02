@@ -1,87 +1,87 @@
-readme_content = """# ⚡ TAPPO — Smart Table Ordering SaaS (MVP)
+# ⚡ TAPPO — Smart Table Ordering SaaS (MVP)
 
-> **TAPPO** هو نظام سحابي متطور (SaaS) يهدف لإعادة تعريف تجربة الضيافة داخل المقاهي والمطاعم عبر أتمتة عملية الطلب من الطاولة مباشرة باستخدام تقنيات الـ **QR Code** و **NFC**، مع توفير إدارة لحظية للطلبات وتحليلات أداء شاسعة.
+> **TAPPO** is a cutting-edge cloud-based SaaS platform designed to redefine the hospitality experience in cafes and restaurants. It automates table-side ordering via **QR Code** and **NFC** technologies, seamlessly bridging the gap between customers and the kitchen while providing real-time order management and comprehensive performance analytics.
 
 ---
 
-## 📂 مسار المشروع وهيكل المجلدات (Project Architecture)
+## 📂 Project Architecture
 
-| المجلد / الملف | الوصف والمسؤولية |
+| Directory / File | Description & Responsibility |
 | :--- | :--- |
-| 📁 **`Tappo/`** | المجلد الرئيسي الحاضن للمشروع ككل |
-| └── 📁 **`tappo-v01/`** | مجلد تطبيق الـ React المعتمد للإصدار الأولي (MVP) |
-| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/components/`** | المكونات المعاد استخدامها (Buttons, Modals, Cards, Popups) |
-| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/pages/`** | واجهات النظام الرئيسية (Menu, MerchantDashboard, AdminPanel) |
-| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/context/`** | إدارة الحالة العامة وتمرير البيانات (CartContext, OrderContext) |
-| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/reducers/`** | إدارة الحالات المعقدة بنظافة عبر `useReducer` |
-| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/data/`** | البيانات التجريبية المبدئية (`mockData.js`) قبل ربط الـ API |
-| &nbsp;&nbsp;&nbsp;&nbsp;└── 📁 **`public/`** | الأصول العامة والملفات الثابتة (`index.html`, `manifest.json`) |
+| 📁 **`Tappo/`** | Root workspace directory. |
+| └── 📁 **`tappo-v01/`** | Main React application directory for the MVP. |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/components/`** | Reusable UI components (Buttons, Modals, Cards, Popups). |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/pages/`** | Core application views (Menu, MerchantDashboard, AdminPanel). |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/context/`** | Global state management providers (CartContext, OrderContext). |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/reducers/`** | Complex state logic handled cleanly via `useReducer`. |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── 📁 **`src/data/`** | Initial local JSON mock data (`mockData.js`) prior to API integration. |
+| &nbsp;&nbsp;&nbsp;&nbsp;└── 📁 **`public/`** | Static assets and public configurations (`index.html`, `manifest.json`). |
 
 ---
 
-## 💎 الميزات الأساسية ونطاق النظام (Core Features Scope)
+## 💎 Core Features Scope
 
-### 📱 1. المنيو التفاعلي والطلب الذكي (Smart Menu & Ordering)
+### 📱 1. Smart Menu & Interactive Ordering
 
-| الميزة | نوع التكنولوجيا | الوصف الشامل والهدف التشغيلي |
+| Feature | Tech Implementation | Operational Goal & Description |
 | :--- | :---: | :--- |
-| 🔗 **الطلب المباشر** | `QR / NFC` | مسح الرمز من الطاولة للوصول الفوري للمنيو والطلب بدون تسجيل حساب |
-| 🪟 **التفاصيل المنبثقة** | `MUI Dialog` | نافذة منبثقة تفاعلية عند الضغط على الكارت تعرض المكونات والأسعار |
-| ⚠️ **تحذيرات الحساسية** | `Allergen System` | إشارات تحذير بصرية مدمجة على الأصناف التي تحوي مواد مسببة للحساسية |
-| 🔔 **استدعاء الجرسون** | `Instant Alert` | زر مخصص لطلب الخدمة أو الفاتورة مباشرة برقم الطاولة |
-| 🧠 **مُحرك الاقتراحات** | `Cross-Selling Engine` | تحليل السلة عند التوجه لتأكيد الطلب واقتراح أصناف مكملة لزيادة مبيعات المقهى |
-| 💬 **آراء العملاء** | `Private Feedback` | تقييمات وملاحظات مغلقة تُرسل لوحة التحكم للإدارة فقط دون نشرها علناً |
+| 🔗 **Direct Ordering** | `QR / NFC` | Frictionless table-side menu access and ordering without account registration. |
+| 🪟 **Interactive Popups** | `MUI Dialog` | Detailed modal views displaying item descriptions, ingredients, and pricing upon card click. |
+| ⚠️ **Allergen Warnings** | `Allergen System` | Integrated visual badges for items containing common allergens to ensure customer safety. |
+| 🔔 **Waiter Call** | `Instant Alert` | Dedicated quick-action button to request table service or the bill directly to the dashboard. |
+| 🧠 **Smart Cross-Selling** | `Recommendation Engine` | Cart-level analysis proposing complementary items (e.g., desserts with coffee) to increase AOV. |
+| 💬 **Private Feedback** | `Admin-Only Insights` | Closed-loop review system directing customer feedback strictly to management. |
 
 ---
 
-### 🖥️ 2. لوحة تحكم المقهى اللحظية (Merchant Dashboard)
+### 🖥️ 2. Merchant Real-Time Dashboard
 
-| المرحلة / الخدمة | التنبيه المرفق | آلية العمل والوظيفة |
+| Stage / Feature | Alert Type | Functionality |
 | :--- | :---: | :--- |
-| 🟢 **1. قبول الطلب** | 🔊 صوتي + 👁️ مرئي | استقبال الطلب اللحظي المنظم ببطاقات تحمل رقم الطاولة واعتماده |
-| 🟡 **2. جاري التحضير** | 👁️ إشعار مرئي | نقل الطلب إلى قسم التحضير بالمطبخ / البار |
-| 🔵 **3. الطلب جاهز** | 🔊 تنبيه اكتمال | إشعار فريق الخدمة بإنهاء التحضير وتسليمه للطاولة |
-| 📜 **أرشيف اليوم** | 💾 حفظ تلقائي | تبويب خاص يحفظ سجل كافة معاملات اليوم للرجوع إليها |
-| 🔐 **نظام الأمان** | 🔑 Credentials | تسجيل دخول مخصص ببيانات تُدار وتُحدد من لوحة الإدارة العامة |
+| 🟢 **1. Order Accepted** | 🔊 Audio + 👁️ Visual | Real-time reception of table-specific orders structured in actionable cards. |
+| 🟡 **2. Preparing** | 👁️ Visual Status | Status update shifting the order to the kitchen/bar queue. |
+| 🔵 **3. Ready for Service** | 🔊 Completion Alert | Notification prompting the floor staff to serve the finalized order to the table. |
+| 📜 **Daily Ledger** | 💾 Auto-Save | Comprehensive archive logging all daily transactions for end-of-day review. |
+| 🔐 **Access Control** | 🔑 Credentials | Secure login system using predefined admin credentials. |
 
 ---
 
-### 📊 3. لوحة الإدارة العامة والتحليلات (Admin Panel & Analytics)
+### 📊 3. Admin Panel & Analytics
 
-| المؤشر / الرسم البياني | نوع الفلترة | القيمة المستفادة والتحليل |
+| Metric / Chart | Filtering Capability | Business Value |
 | :--- | :---: | :--- |
-| 📈 **المخطط البياني** | `اليوم / الأسبوع` | رسم بياني متطور يوضح سلوك المبيعات والنمو خلال الفترات |
-| ⏰ **تحليل أوقات الذروة** | `Hourly / Daily` | تحديد أكثر ساعة نشاطاً باليوم وأكثر يوم نشاطاً بالأسبوع |
-| 🔢 **إجمالي الطلبات** | `KPI Card` | عدد الطلبات المنجزة خلال الفترة المحددة |
-| 👥 **إجمالي العملاء** | `KPI Card` | عدد العملاء الفريدين (تأسيس لبرامج الولاء مستقبلاً) |
-| 💰 **متوسط سعر الطلب** | `KPI Card` | معدل إنفاق العميل في المرة الواحدة (Average Order Value) |
-| 🏆 **الصنف الأكثر طلباً** | `KPI Card` | صنف الـ Best Seller الأكثر مبيعاً بالمقهى |
+| 📈 **Sales Trends** | `Daily / Weekly` | Interactive charts visualizing sales volume and revenue growth over time. |
+| ⏰ **Peak Hours Analysis** | `Hourly / Daily` | Identification of the busiest hours and days to optimize staff scheduling. |
+| 🔢 **Total Orders** | `KPI Card` | Aggregate count of completed transactions within the selected timeframe. |
+| 👥 **Total Customers** | `KPI Card` | Unique customer count (laying the groundwork for future loyalty programs). |
+| 💰 **Average Order Value** | `KPI Card` | Tracking the AOV to measure the effectiveness of the cross-selling engine. |
+| 🏆 **Top Performer** | `KPI Card` | Highlighting the best-selling menu item to drive procurement decisions. |
 
 ---
 
-## 🛠️ حزمة التقنيات والمكتبات (Tech Stack)
+## 🛠️ Tech Stack
 
-| التقنية / المكتبة | الإصدار / الأداة | الغرض والاستخدام العملي |
-| :--- | :---: | :--- |
-| **Frontend Core** | `React.js` | البناء الهيكلي المعتمد على Functional Components |
-| **UI Library** | `Material UI (MUI)` | التصميم المتناسق، الأيقونات الاحترافية، والكومبوننتس الجاهزة |
-| **State Management** | `useReducer + Context` | إدارة الحالات المعقدة (السلة ودورة الطلبات) بنظافة |
-| **Routing** | `React Router v6` | الربط بين صفحات المنيو، لوحة التحكم، والـ Admin |
-| **Data Format** | `JSON / JS Objects` | هيكلة الـ Mock Data المبدئية للواجهات قبل ربط السيرفر |
+| Technology / Library | Role / Implementation |
+| :--- | :--- |
+| **Frontend Core** | `React.js` (Functional Components & Custom Hooks) |
+| **UI Framework** | `Material UI (MUI)` for consistent, responsive, and professional UI components and icons. |
+| **State Management** | `useReducer` paired with `Context API` for predictable complex state flows (Cart & Order Pipeline). |
+| **Routing** | `React Router v6` for seamless navigation between Menu, Dashboard, and Admin views. |
+| **Data Handling** | `JSON / JS Objects` for structured mock data modeling prior to backend integration. |
 
 ---
 
-## 🚀 خطة التشغيل والإعداد المحلي (Local Setup)
+## 🚀 Local Development Setup
 
 ```bash
-# 1. الانتقال إلى مجلد المشروع الرئيسي
+# 1. Navigate to the main project directory
 cd Tappo/tappo-v01
 
-# 2. تثبيت الحزم والتبعيات الأساسية
+# 2. Install core React dependencies
 npm install
 
-# 3. تثبيت مكتبات Material UI والأيقونات
+# 3. Install Material UI and its dependencies
 npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 
-# 4. تشغيل خادم التطوير المحلي
+# 4. Start the local development server
 npm start
