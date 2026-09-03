@@ -9,26 +9,53 @@ import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 
 function MenuHeader({ table }) {
   return (
-    <Box>
+    <Box sx={{ pb: 1 }}>
       <Stack
         direction="row"
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 3,
+          mb: 2.5,
         }}
       >
         <Box>
-          <Typography variant="h3" component="h3">
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ fontWeight: 800, letterSpacing: "-0.5px", mb: 0.5 }}
+          >
             راحة كافي
           </Typography>
-          <Typography variant="subtitle1" component="p">
+          <Typography 
+            variant="body2" 
+            component="p" 
+            sx={{ color: "text.secondary", fontWeight: 500 }}
+          >
             كافي و حلويات راحة
           </Typography>
         </Box>
-        <Chip icon={<PlaceOutlinedIcon />} label={`طاولة  ${table}`} />
+
+        <Chip 
+          color="secondary.main" 
+          icon={<PlaceOutlinedIcon sx={{ fontSize: "1.1rem !important", ml: "4px !important" }} />} 
+          label={`طاولة ${table}`} 
+          sx={{
+            px: 1.5,
+            py: 2.2,
+            borderRadius: "12px",
+            fontWeight: 700,
+            fontSize: "0.875rem",
+            color: "secondary.contrastText",
+            backgroundColor: "secondary.main",
+            "& .MuiChip-icon": {
+              marginLeft: "4px",
+              marginRight: "-2px",
+            }
+          }} 
+        />
       </Stack>
+      
       <MenuSearchBar />
     </Box>
   );

@@ -1,38 +1,50 @@
-// HOOKS
-import { useState } from "react";
-
 // MUI COMPONENTS
 import { ToggleButton, ToggleButtonGroup, Box } from "@mui/material";
 
-function MenuFilterTabs() {
-  const [selectedCategories, setSelectedCategories] = useState(["all"]);
+// CONTEXTS
+import { useMenu } from "../context/MenuContext";
 
-  const handleAlignment = (event, newCategories) => {
-    if (newCategories.length > 0) {
-      setSelectedCategories(newCategories);
-    }
-  };
+
+function MenuFilterTabs() {
+  const { categoriesList, selectedCategories, handleAlignment } = useMenu();
+
+  const filterTabs = categoriesList.map((category) => (
+    <ToggleButton key={category.id} value={category.id}>
+      {category.title}
+    </ToggleButton>
+  ));
 
   return (
-    <Box sx={{ overflowX: "auto", py: 1, mb: 2 }}>
+    <Box 
+      sx={{ 
+        width: "100%", 
+        overflowX: "auto", 
+        py: 1, 
+        mb: 2,
+        "&::-webkit-scrollbar": { display: "none" },
+        scrollbarWidth: "none",
+      }}
+    >
       <ToggleButtonGroup
         value={selectedCategories}
         onChange={handleAlignment}
         aria-label="menu categories"
-        // exclusive={false}
         sx={{
           display: "flex",
           gap: 1,
+          width: "max-content",
           "& .MuiToggleButton-root": {
-            borderRadius: "20px",
+            borderRadius: "16px",
             border: "1px solid",
             borderColor: "divider",
-            px: 3,
-            py: 1,
+            px: 2.5,
+            py: 0.6,
+            fontSize: "0.875rem",
             textTransform: "none",
-            fontWeight: 600,
+            fontWeight: 500,
+            whiteSpace: "nowrap",
             color: "text.secondary",
-            backgroundColor: "background.paper",
+            backgroundColor: "background.default",
             "&.Mui-selected": {
               backgroundColor: "primary.main",
               color: "primary.contrastText",
@@ -45,10 +57,7 @@ function MenuFilterTabs() {
         }}
       >
         <ToggleButton value="all">الكل</ToggleButton>
-        <ToggleButton value="cold-brew">مشروبات باردة</ToggleButton>
-        <ToggleButton value="desserts">حلى</ToggleButton>
-        <ToggleButton value="snacks">سناكس</ToggleButton>
-        <ToggleButton value="specials">عروض خاصة</ToggleButton>
+        {filterTabs}
       </ToggleButtonGroup>
     </Box>
   );

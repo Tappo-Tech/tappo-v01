@@ -1,10 +1,13 @@
 // COMPONENTS
 import MenuHeader from "../components/MenuHeader";
 import MenuFilterTabs from "../components/MenuFilterTabs";
+import MenuItemsList from "../components/MenuItemsList";
+import FloatingCartBar from "../components/FloatingCartBar";
 import NotFound from "../components/NotFound";
 
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
 // DATA
 import { validTables } from "../data/mockData";
@@ -28,10 +31,33 @@ function Menu() {
   }
 
   return (
-    <Container maxWidth="md">
-      <MenuHeader table={tableNumber} />
-      <MenuFilterTabs />
-    </Container>
+    <Box
+      sx={{ minHeight: "100vh", backgroundColor: "background.default", pb: 10 }}
+    >
+      <Box
+        sx={{
+          backgroundColor: "background.paper",
+          px: 2,
+          pt: 2,
+          pb: 1,
+          borderBottomLeftRadius: "20px",
+          borderBottomRightRadius: "20px",
+          boxShadow: "0px 4px 20px rgba(0,0,0,0.03)",
+          mb: 2,
+        }}
+      >
+        <Container maxWidth="md" disableGutters>
+          <MenuHeader table={tableNumber} />
+          <MenuFilterTabs />
+        </Container>
+      </Box>
+
+      <Container maxWidth="md">
+        <MenuItemsList />
+      </Container>
+
+      <FloatingCartBar />
+    </Box>
   );
 }
 

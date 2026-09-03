@@ -1,22 +1,30 @@
 // MUI COMPONENTS
-import { TextField } from '@mui/material';
+import { TextField } from "@mui/material";
+
+// CONTEXTS
+import { useMenu } from "../context/MenuContext";
 
 function MenuSearchBar() {
+  const { searchQuery, setSearchQuery } = useMenu();
+
   return (
     <TextField
       fullWidth
+      size="small"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
       placeholder="ابحث عن قهوتك أو حلاك المفضل..."
       variant="outlined"
       sx={{
-        backgroundColor: 'background.paper',
-        '& .MuiOutlinedInput-root': {
-          '& fieldset': {
-            borderColor: 'divider',
+        backgroundColor: "background.default",
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderColor: "divider",
           },
-          '&.Mui-focused fieldset': {
-            borderColor: 'secondary.main', 
-          }
-        }
+          "&.Mui-focused fieldset": {
+            borderColor: "secondary.light",
+          },
+        },
       }}
     />
   );

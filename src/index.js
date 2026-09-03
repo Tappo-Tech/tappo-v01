@@ -10,14 +10,22 @@ import { BrowserRouter } from "react-router-dom";
 import theme from "./theme/Theme";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
+// CONTEXTS
+import { MenuProvider } from "./context/MenuContext";
+import { CartProvider } from "./context/CartContext";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <MenuProvider>
+        <CartProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+              <App />
+          </ThemeProvider>
+        </CartProvider>
+      </MenuProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

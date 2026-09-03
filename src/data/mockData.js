@@ -15,6 +15,7 @@ export const menuItems = [
     price: 22,
     image: "https://images.unsplash.com/photo-1579896328228-2b8fa225d3a5?q=80&w=300&auto=format&fit=crop",
     allergens: ["حليب"],
+    quantity: 1,
     isPopular: true,
   },
   {
@@ -25,6 +26,7 @@ export const menuItems = [
     price: 18,
     image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=300&auto=format&fit=crop",
     allergens: [],
+    quantity: 1,
     isPopular: false,
   },
   {
@@ -35,6 +37,7 @@ export const menuItems = [
     price: 24,
     image: "https://images.unsplash.com/photo-1461023058943-0708e52235eb?q=80&w=300&auto=format&fit=crop",
     allergens: ["حليب", "مكسرات"],
+    quantity: 1,
     isPopular: true,
   },
   {
@@ -45,6 +48,7 @@ export const menuItems = [
     price: 28,
     image: "https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=300&auto=format&fit=crop",
     allergens: ["حليب", "جلوتين", "بيض"],
+    quantity: 1,
     isPopular: true,
   }
 ];
