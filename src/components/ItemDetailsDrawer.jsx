@@ -1,8 +1,7 @@
-// HOOKS
 import { useState } from "react";
 
 // MUI COMPONENTS
-import Drawer from "@mui/material/Drawer";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -30,10 +29,12 @@ function ItemDetailsDrawer({ open, onClose, itemDetails }) {
   const bottomBarHeight = "140px";
 
   return (
-    <Drawer
+    <SwipeableDrawer
       anchor="bottom"
       open={open}
       onClose={onClose}
+      onOpen={() => {}}
+      disableSwipeToOpen={true}
       slotProps={{
         paper: {
           sx: {
@@ -53,6 +54,20 @@ function ItemDetailsDrawer({ open, onClose, itemDetails }) {
           position: "relative",
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "40px",
+            height: "4px",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            borderRadius: "2px",
+            zIndex: 11,
+          }}
+        />
+
         <IconButton
           onClick={onClose}
           sx={{
@@ -170,8 +185,6 @@ function ItemDetailsDrawer({ open, onClose, itemDetails }) {
           variant="contained"
           size="large"
           onClick={() => {
-            console.log("الصنف الممرر:", itemDetails);
-            console.log("الكمية المحددة:", quantity);
             addToCart(itemDetails, quantity);
             onClose();
             setQuantity(1);
@@ -187,7 +200,7 @@ function ItemDetailsDrawer({ open, onClose, itemDetails }) {
           إضافة ({itemDetails?.price * quantity} ر.س)
         </Button>
       </Box>
-    </Drawer>
+    </SwipeableDrawer>
   );
 }
 

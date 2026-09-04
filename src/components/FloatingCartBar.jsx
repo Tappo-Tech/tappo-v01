@@ -3,19 +3,28 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-function FloatingCartBar({ totalPrice, itemCount }) {
-  // المنطق الذي طلبته لإخفاء الشريط إذا كانت السلة فارغة
-  if (itemCount === 0) return null;
+// CONTEXTS
+import { useCart } from "../context/CartContext";
+
+function FloatingCartBar({ handleCartOpen }) {
+  const { cartItems } = useCart();
+
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+
+  if (cartItems.length === 0) return null;
 
   return (
     <Box
       sx={{
         position: "fixed",
-        bottom: 70, 
+        bottom: 70,
         left: "50%",
         transform: "translateX(-50%)",
-        width: "calc(100% - 32px)", 
-        maxWidth: "500px", 
+        width: "calc(100% - 32px)",
+        maxWidth: "500px",
         backgroundColor: "secondary.main",
         color: "white",
         borderRadius: "16px",
@@ -24,7 +33,7 @@ function FloatingCartBar({ totalPrice, itemCount }) {
         justifyContent: "space-between",
         alignItems: "center",
         boxShadow: "0px 8px 24px rgba(0,0,0,0.2)",
-        zIndex: 1000, 
+        zIndex: 1000,
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -35,7 +44,7 @@ function FloatingCartBar({ totalPrice, itemCount }) {
             mb: 0.5,
           }}
         >
-          {itemCount} عناصر مختارة
+          {cartItems.length} عناصر مختارة
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
           {totalPrice} ر.س
@@ -43,6 +52,7 @@ function FloatingCartBar({ totalPrice, itemCount }) {
       </Box>
 
       <Button
+        onClick={handleCartOpen}
         variant="contained"
         sx={{
           backgroundColor: "white",

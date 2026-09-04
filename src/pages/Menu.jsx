@@ -3,6 +3,7 @@ import MenuHeader from "../components/MenuHeader";
 import MenuFilterTabs from "../components/MenuFilterTabs";
 import MenuItemsList from "../components/MenuItemsList";
 import FloatingCartBar from "../components/FloatingCartBar";
+import CartDrawer from "../components/CartDrawer";
 import NotFound from "../components/NotFound";
 
 // MUI COMPONENTS
@@ -14,8 +15,19 @@ import { validTables } from "../data/mockData";
 
 // HOOKS
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 function Menu() {
+  const [ isOpen, setOpen ] = useState(false);
+
+  function handleCartOpen() {
+    setOpen(true);
+  }
+
+  function handleCartClose() {
+    setOpen(false);
+  }
+
   const { tableNumber } = useParams();
   const isValidTable = validTables.includes(tableNumber);
 
@@ -56,7 +68,9 @@ function Menu() {
         <MenuItemsList />
       </Container>
 
-      <FloatingCartBar />
+      <FloatingCartBar handleCartOpen={handleCartOpen} />
+
+      <CartDrawer open={isOpen} close={handleCartClose} />
     </Box>
   );
 }
