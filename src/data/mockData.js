@@ -52,3 +52,13 @@ export const menuItems = [
     isPopular: true,
   }
 ];
+
+export const currentUserMock = {
+  id: "usr_101",
+  name: "Mohamed",
+  email: "mohamed@tappo.com",
+  role: "Manager",
+  restaurantName: "TAPPO Restaurant",
+  avatar: "",
+  notificationsCount: 3,
+};

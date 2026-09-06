@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // COMPONENTS
 import CartItemCard from "./CartItemCard";
 
@@ -13,6 +11,9 @@ import IconButton from "@mui/material/IconButton";
 
 // ICONS
 import CloseIcon from "@mui/icons-material/Close";
+
+// HOOKS
+import { useState } from "react";
 
 // CONTEXTS
 import { useCart } from "../context/CartContext";

@@ -1,8 +1,10 @@
 // COMPONENTS
 import Menu from "./pages/Menu";
+import Dashboard from "./pages/Dashboard";
+import NotFound from "./components/NotFound";
 
 // STYLES
-import "./App.css"
+import "./App.css";
 
 // ROUTING
 import { Routes, Route } from "react-router-dom";
@@ -11,8 +13,17 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/menu/:tableNumber" element={<Menu />} />
-        <Route path="/menu/" element={<Menu />} />
+        <Route path="/menu/:tableNumber?" element={<Menu />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="*"
+          element={
+            <NotFound
+              title="صفحة غير موجودة"
+              message="الرابط الذي تحاول الوصول إليه غير صحيح."
+            />
+          }
+        />
       </Routes>
     </div>
   );
