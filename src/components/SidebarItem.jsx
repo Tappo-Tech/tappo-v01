@@ -6,40 +6,47 @@ import ListItemText from "@mui/material/ListItemText";
 
 function SidebarItem({ navItem, isSelected, onSelect }) {
   return (
-    <ListItem disablePadding sx={{ mb: 1 }}>
+    <ListItem disablePadding sx={{ mb: 0 }}>
       <ListItemButton
         selected={isSelected}
         onClick={onSelect}
         sx={{
-          borderRadius: 2,
+          borderRadius: "6px",
+          py: 1,
+          px: 1.5,
+          gap: 1.5,
+          justifyContent: "flex-start",
           "&.Mui-selected": {
-            bgcolor: "primary.main",
+            bgcolor: "rgba(255, 255, 255, 0.08)",
             color: "common.white",
             "&:hover": {
-              bgcolor: "primary.dark",
+              bgcolor: "rgba(255, 255, 255, 0.12)",
             },
             "& .MuiListItemIcon-root": {
-              color: "common.white",
+              color: "#ff602e",
             },
           },
           "&:hover": {
-            bgcolor: "rgba(255, 255, 255, 0.08)",
+            bgcolor: "rgba(255, 255, 255, 0.05)",
           },
         }}
       >
         <ListItemIcon
           sx={{
-            minWidth: 40,
-            color: isSelected ? "common.white" : "inherit",
+            minWidth: "auto",
+            color: isSelected ? "#ff602e" : "inherit",
+            display: "flex",
+            alignItems: "center",
           }}
         >
           {navItem.icon}
         </ListItemIcon>
         <ListItemText
           primary={navItem.label}
-          primarytypographyprops={{
-            fontSize: "0.95rem",
-            fontWeight: isSelected ? 700 : 400,
+          primaryTypographyProps={{
+            fontSize: "0.9rem",
+            fontWeight: isSelected ? 700 : 500,
+            sx: { textAlign: "start" },
           }}
         />
       </ListItemButton>

@@ -17,6 +17,7 @@ export const menuItems = [
     allergens: ["حليب"],
     quantity: 1,
     isPopular: true,
+    available: true,
   },
   {
     id: "item-2",
@@ -28,6 +29,7 @@ export const menuItems = [
     allergens: [],
     quantity: 1,
     isPopular: false,
+    available: true,
   },
   {
     id: "item-3",
@@ -39,6 +41,7 @@ export const menuItems = [
     allergens: ["حليب", "مكسرات"],
     quantity: 1,
     isPopular: true,
+    available: true,
   },
   {
     id: "item-4",
@@ -50,6 +53,7 @@ export const menuItems = [
     allergens: ["حليب", "جلوتين", "بيض"],
     quantity: 1,
     isPopular: true,
+    available: true,
   }
 ];
 

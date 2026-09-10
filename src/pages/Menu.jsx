@@ -13,12 +13,16 @@ import Box from "@mui/material/Box";
 // DATA
 import { validTables } from "../data/mockData";
 
+// CONTEXTS
+import { useCart } from "../context/CartContext";
+
 // HOOKS
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Menu() {
   const [ isOpen, setOpen ] = useState(false);
+  const {setTable} = useCart();
 
   function handleCartOpen() {
     setOpen(true);
@@ -30,6 +34,13 @@ function Menu() {
 
   const { tableNumber } = useParams();
   const isValidTable = validTables.includes(tableNumber);
+
+  useEffect(() => {
+    if (tableNumber) {
+      setTable(tableNumber);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableNumber, isValidTable]);
 
   if (!isValidTable) {
     return (
@@ -44,7 +55,7 @@ function Menu() {
 
   return (
     <Box
-      sx={{ minHeight: "100vh", backgroundColor: "background.default", pb: 10 }}
+      sx={{ minHeight: "100vh", backgroundColor: "background.default", pb: 2 }}
     >
       <Box
         sx={{

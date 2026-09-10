@@ -20,7 +20,7 @@ function FloatingCartBar({ handleCartOpen }) {
     <Box
       sx={{
         position: "fixed",
-        bottom: 70,
+        bottom: 20,
         left: "50%",
         transform: "translateX(-50%)",
         width: "calc(100% - 32px)",

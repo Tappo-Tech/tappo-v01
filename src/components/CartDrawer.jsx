@@ -17,21 +17,40 @@ import { useState } from "react";
 
 // CONTEXTS
 import { useCart } from "../context/CartContext";
+import { useOrders } from "../context/OrdersContext";
+
+// OTHERS
+import { v4 as uuidV4 } from "uuid";
 
 function CartDrawer({ open, close }) {
-  const { cartItems } = useCart();
+  const { cartItems, tableNumber, clearCart } = useCart();
+  const { addOrder } = useOrders();
   const [notes, setNotes] = useState("");
 
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
 
   const handleConfirmOrder = () => {
-    console.log("تم تأكيد الطلب بنجاح!", { cartItems, notes, totalPrice });
+    if (cartItems.length === 0) return;
+
+    const newOrder = {
+      id: uuidV4(),
+      items: cartItems,
+      total: totalPrice,
+      tableNumber: tableNumber || "غير محدد",
+      notes: notes,
+    };
+
+    addOrder(newOrder);
+
+    clearCart();
+    setNotes("");
+    close();
   };
 
-  const bottomBarHeight = "190px";
+  const bottomBarHeight = "130px";
 
   return (
     <SwipeableDrawer
@@ -59,7 +78,14 @@ function CartDrawer({ open, close }) {
           p: 2,
         }}
       >
-        <Box sx={{ pb: 1, borderBottom: "1px solid", borderColor: "divider", mb: 2 }}>
+        <Box
+          sx={{
+            pb: 1,
+            borderBottom: "1px solid",
+            borderColor: "divider",
+            mb: 2,
+          }}
+        >
           <Box
             sx={{
               width: "40px",
@@ -70,7 +96,13 @@ function CartDrawer({ open, close }) {
               mb: 1.5,
             }}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Typography variant="h6" sx={{ fontWeight: 800 }}>
               ملخص الطلب ({cartItems.length})
             </Typography>
@@ -116,10 +148,16 @@ function CartDrawer({ open, close }) {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1.5 }}>
-          <Typography variant="body1" sx={{ color: "text.secondary", fontWeight: 600 }}>
+          <Typography
+            variant="body1"
+            sx={{ color: "text.secondary", fontWeight: 600 }}
+          >
             الإجمالي النهائي:
           </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 800, color: "primary.main" }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 800, color: "primary.main" }}
+          >
             {totalPrice} ر.س
           </Typography>
         </Box>
@@ -128,6 +166,7 @@ function CartDrawer({ open, close }) {
           fullWidth
           variant="contained"
           size="large"
+          disabled={cartItems.length === 0}
           onClick={handleConfirmOrder}
           sx={{
             py: 1.4,

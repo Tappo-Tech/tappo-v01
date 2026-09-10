@@ -1,9 +1,31 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem("app_cart");
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error("فشل في تحميل عناصر السلة من localStorage", error);
+      return [];
+    }
+  });
+
+  const [tableNumber, setTableNumber] = useState(null);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("app_cart", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("فشل في حفظ السلة في localStorage", error);
+    }
+  }, [cartItems]);
+
+  const setTable = (number) => {
+    setTableNumber(number);
+  };
 
   const addToCart = (item, quantityToAdd = 1) => {
     setCartItems((prevCartItems) => {
@@ -43,8 +65,23 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("app_cart");
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updatedQuantity }}>
+    <CartContext.Provider
+      value={{
+        tableNumber,
+        setTable,
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updatedQuantity,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

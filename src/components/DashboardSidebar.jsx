@@ -97,8 +97,31 @@ function DashboardSidebar({
           </Typography>
         </Box>
 
-        <Box sx={{ pt: 5 }}>
-          <List disablePadding>{sidebarItems}</List>
+        <Box sx={{ pt: 4 }}>
+          <List
+            disablePadding
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+              "& .MuiListItemButton-root, & .MuiButtonBase-root": {
+                borderRadius: "8px",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
+                },
+                "&.Mui-selected, &:focus-visible": {
+                  backgroundColor: "rgba(255, 255, 255, 0.18)", 
+                  fontWeight: 700,
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.22)",
+                  },
+                },
+              },
+            }}
+          >
+            {sidebarItems}
+          </List>
         </Box>
       </Box>
     </SwipeableDrawer>

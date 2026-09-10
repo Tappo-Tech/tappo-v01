@@ -13,6 +13,8 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 // CONTEXTS
 import { MenuProvider } from "./context/MenuContext";
 import { CartProvider } from "./context/CartContext";
+import { OrdersProvider } from "./context/OrdersContext";
+import { HistoryProvider } from "./context/HistoryContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,10 +22,14 @@ root.render(
     <BrowserRouter>
       <MenuProvider>
         <CartProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-              <App />
-          </ThemeProvider>
+          <OrdersProvider>
+            <HistoryProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <App />
+              </ThemeProvider>
+            </HistoryProvider>
+          </OrdersProvider>
         </CartProvider>
       </MenuProvider>
     </BrowserRouter>

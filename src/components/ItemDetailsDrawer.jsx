@@ -26,7 +26,7 @@ function ItemDetailsDrawer({ open, onClose, itemDetails }) {
 
   const hasAllergy = itemDetails?.allergens && itemDetails.allergens.length > 0;
 
-  const bottomBarHeight = "140px";
+  const bottomBarHeight = "80px";
 
   return (
     <SwipeableDrawer

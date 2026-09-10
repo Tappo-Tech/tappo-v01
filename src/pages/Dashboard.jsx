@@ -1,11 +1,15 @@
 // COMPONENTS
 import DashboardSidebar from "../components/DashboardSidebar";
 import DashboardHeader from "../components/DashboardHeader";
+import LiveOrders from "../components/LiveOrders";
+import MenuControl from "../components/MenuControl";
+import OrdersHistory from "../components/OrdersHistory";
 
 // MUI COMPONENTS
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 
 // HOOKS
 import { useState } from "react";
@@ -40,20 +44,20 @@ function Dashboard() {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 9 }} sx={{ p: { xs: 2, md: 2 } }}>
-          <Stack spacing={3}>
-            <DashboardHeader
-              title={titles[activeTab] || activeTab}
-              onOpenMenu={handleDrawerToggle}
-            />
+          <Stack spacing={1}>
+            <Box sx={{width: "100%", backgroundColor: "white"}}>
+              <DashboardHeader
+                title={titles[activeTab] || activeTab}
+                onOpenMenu={handleDrawerToggle}
+              />
+            </Box>
 
-            <Box sx={{ mt: 2 }}>
-              {activeTab === "orders" && <div>صفحة الطلبات (Live Orders)</div>}
-              {activeTab === "menu" && (
-                <div>صفحة التحكم في المنيو (Menu Control)</div>
-              )}
-              {activeTab === "history" && (
-                <div>سجل العمليات (History)</div>
-              )}
+            <Divider variant="fullWidth" sx={{ mt: 2 }} />
+
+            <Box sx={{ mt: 2, width: "100%" }}>
+              {activeTab === "orders" && <LiveOrders />}
+              {activeTab === "menu" && <MenuControl />}
+              {activeTab === "history" && <OrdersHistory />}
               {activeTab === "settings" && <div>صفحة الإعدادات (Settings)</div>}
             </Box>
           </Stack>
