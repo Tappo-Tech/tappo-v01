@@ -15,6 +15,8 @@ import { MenuProvider } from "./context/MenuContext";
 import { CartProvider } from "./context/CartContext";
 import { OrdersProvider } from "./context/OrdersContext";
 import { HistoryProvider } from "./context/HistoryContext";
+import { StoreInfoProvider } from "./context/StoreInfoContext";
+import { UserProvider } from "./context/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -24,10 +26,14 @@ root.render(
         <CartProvider>
           <OrdersProvider>
             <HistoryProvider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <App />
-              </ThemeProvider>
+              <StoreInfoProvider>
+                <UserProvider>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <App />
+                  </ThemeProvider>
+                </UserProvider>
+              </StoreInfoProvider>
             </HistoryProvider>
           </OrdersProvider>
         </CartProvider>

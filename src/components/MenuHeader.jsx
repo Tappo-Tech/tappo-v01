@@ -7,7 +7,12 @@ import { Box, Stack, Chip, Typography } from "@mui/material";
 // ICONS
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 
+// CONTEXTS
+import { useStore } from "../context/StoreInfoContext";
+
 function MenuHeader({ table }) {
+  const { storeInfo } = useStore();
+
   return (
     <Box sx={{ pb: 1 }}>
       <Stack
@@ -20,26 +25,30 @@ function MenuHeader({ table }) {
         }}
       >
         <Box>
-          <Typography 
-            variant="h4" 
-            component="h1" 
+          <Typography
+            variant="h4"
+            component="h1"
             sx={{ fontWeight: 800, letterSpacing: "-0.5px", mb: 0.5 }}
           >
-            راحة كافي
+            {storeInfo.storeName}
           </Typography>
-          <Typography 
-            variant="body2" 
-            component="p" 
+          <Typography
+            variant="body2"
+            component="p"
             sx={{ color: "text.secondary", fontWeight: 500 }}
           >
-            كافي و حلويات راحة
+            {storeInfo.storeDisc}
           </Typography>
         </Box>
 
-        <Chip 
-          color="secondary.main" 
-          icon={<PlaceOutlinedIcon sx={{ fontSize: "1.1rem !important", ml: "4px !important" }} />} 
-          label={`طاولة ${table}`} 
+        <Chip
+          color="secondary.main"
+          icon={
+            <PlaceOutlinedIcon
+              sx={{ fontSize: "1.1rem !important", ml: "4px !important" }}
+            />
+          }
+          label={`طاولة ${table}`}
           sx={{
             px: 1.5,
             py: 2.2,
@@ -51,11 +60,11 @@ function MenuHeader({ table }) {
             "& .MuiChip-icon": {
               marginLeft: "4px",
               marginRight: "-2px",
-            }
-          }} 
+            },
+          }}
         />
       </Stack>
-      
+
       <MenuSearchBar />
     </Box>
   );

@@ -4,6 +4,7 @@ import DashboardHeader from "../components/DashboardHeader";
 import LiveOrders from "../components/LiveOrders";
 import MenuControl from "../components/MenuControl";
 import OrdersHistory from "../components/OrdersHistory";
+import DashboardSettings from "../components/DashboardSettings";
 
 // MUI COMPONENTS
 import Grid from "@mui/material/Grid";
@@ -43,7 +44,7 @@ function Dashboard() {
             handleDrawerToggle={handleDrawerToggle}
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 9 }} sx={{ p: { xs: 2, md: 2 } }}>
+        <Grid size={{ xs: 12, md: 9 }} sx={{ p: { xs: 2, md: 1 } }}>
           <Stack spacing={1}>
             <Box sx={{width: "100%", backgroundColor: "white"}}>
               <DashboardHeader
@@ -58,7 +59,7 @@ function Dashboard() {
               {activeTab === "orders" && <LiveOrders />}
               {activeTab === "menu" && <MenuControl />}
               {activeTab === "history" && <OrdersHistory />}
-              {activeTab === "settings" && <div>صفحة الإعدادات (Settings)</div>}
+              {activeTab === "settings" && <DashboardSettings />}
             </Box>
           </Stack>
         </Grid>
