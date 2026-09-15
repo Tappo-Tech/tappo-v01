@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 // CONTEXTS
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 function FloatingCartBar({ handleCartOpen }) {
   const { cartItems } = useCart();

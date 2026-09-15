@@ -15,7 +15,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 // CONTEXTS
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 function ItemDetailsDrawer({ open, onClose, itemDetails }) {
   const [quantity, setQuantity] = useState(1);

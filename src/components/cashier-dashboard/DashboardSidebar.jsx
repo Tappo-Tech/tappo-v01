@@ -111,7 +111,7 @@ function DashboardSidebar({
                   backgroundColor: "rgba(255, 255, 255, 0.08)",
                 },
                 "&.Mui-selected, &:focus-visible": {
-                  backgroundColor: "rgba(255, 255, 255, 0.18)", 
+                  backgroundColor: "rgba(255, 255, 255, 0.18)",
                   fontWeight: 700,
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.22)",

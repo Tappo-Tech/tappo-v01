@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 
 // CONTEXTS
-import { useOrders } from "../context/OrdersContext";
+import { useOrders } from "../../../context/OrdersContext";
 
 // ICONS
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
@@ -18,8 +18,12 @@ function LiveOrders() {
 
   const activeOrders = orders.filter((order) => !order.isCompleted);
 
-  const pendingOrders = activeOrders.filter((order) => order.status === "pending");
-  const preparingOrders = activeOrders.filter((order) => order.status === "preparing");
+  const pendingOrders = activeOrders.filter(
+    (order) => order.status === "pending",
+  );
+  const preparingOrders = activeOrders.filter(
+    (order) => order.status === "preparing",
+  );
   const readyOrders = activeOrders.filter((order) => order.status === "ready");
 
   return (

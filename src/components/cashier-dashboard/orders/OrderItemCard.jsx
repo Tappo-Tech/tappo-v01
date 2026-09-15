@@ -11,10 +11,10 @@ import Divider from "@mui/material/Divider";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 // HELPERS
-import { formatTimeAgo } from "../utils/helpers";
+import { formatTimeAgo } from "../../../utils/helpers";
 
 // CONTEXTS
-import { useOrders } from "../context/OrdersContext";
+import { useOrders } from "../../../context/OrdersContext";
 
 function OrderItemCard({ order }) {
   const { updateOrderStatus } = useOrders();
@@ -97,7 +97,9 @@ function OrderItemCard({ order }) {
               gap: 0.8,
             }}
           >
-            <FiberManualRecordIcon sx={{ fontSize: 8, color: "warning.main" }} />
+            <FiberManualRecordIcon
+              sx={{ fontSize: 8, color: "warning.main" }}
+            />
             <Typography
               variant="caption"
               sx={{ fontWeight: 600, color: "text.secondary" }}

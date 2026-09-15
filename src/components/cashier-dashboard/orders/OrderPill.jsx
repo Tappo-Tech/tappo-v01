@@ -16,7 +16,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import dayjs from "dayjs";
 
 // CONTEXTS
-import { useStore } from "../context/StoreInfoContext";
+import { useStore } from "../../../context/StoreInfoContext";
 
 function InvoiceModal({ open, onClose, order }) {
   const { storeInfo } = useStore();
@@ -60,7 +60,12 @@ function InvoiceModal({ open, onClose, order }) {
             </Typography>
           )}
 
-          <Typography sx={{mr: 1}} variant="caption" color="text.secondary" display="block">
+          <Typography
+            sx={{ mr: 1 }}
+            variant="caption"
+            color="text.secondary"
+            display="block"
+          >
             فاتورة مبسطة
           </Typography>
           <Typography variant="caption" display="block">

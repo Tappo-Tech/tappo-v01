@@ -1,6 +1,7 @@
 // COMPONENTS
 import Menu from "./pages/Menu";
 import Dashboard from "./pages/Dashboard";
+import Manager from "./pages/Manager";
 import NotFound from "./components/NotFound";
 
 // STYLES
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/menu/:tableNumber?" element={<Menu />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manager" element={<Manager />} />
         <Route
           path="*"
           element={

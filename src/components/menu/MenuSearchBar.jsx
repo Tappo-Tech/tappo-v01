@@ -2,7 +2,7 @@
 import { TextField } from "@mui/material";
 
 // CONTEXTS
-import { useMenu } from "../context/MenuContext";
+import { useMenu } from "../../context/MenuContext";
 
 function MenuSearchBar() {
   const { searchQuery, setSearchQuery } = useMenu();

@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import InvoiceModal from "./OrderPill";
 
 // CONTEXTS
-import { useOrders } from "../context/OrdersContext";
+import { useOrders } from "../../../context/OrdersContext";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";

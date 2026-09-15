@@ -1,10 +1,10 @@
 // COMPONENTS
-import DashboardSidebar from "../components/DashboardSidebar";
-import DashboardHeader from "../components/DashboardHeader";
-import LiveOrders from "../components/LiveOrders";
-import MenuControl from "../components/MenuControl";
-import OrdersHistory from "../components/OrdersHistory";
-import DashboardSettings from "../components/DashboardSettings";
+import DashboardSidebar from "../components/cashier-dashboard/DashboardSidebar";
+import DashboardHeader from "../components/cashier-dashboard/DashboardHeader";
+import LiveOrders from "../components/cashier-dashboard/orders/LiveOrders";
+import MenuControl from "../components/cashier-dashboard/menu-control/MenuControl";
+import OrdersHistory from "../components/cashier-dashboard/orders/OrdersHistory";
+import DashboardSettings from "../components/cashier-dashboard/settings/DashboardSettings";
 
 // MUI COMPONENTS
 import Grid from "@mui/material/Grid";
@@ -46,7 +46,7 @@ function Dashboard() {
         </Grid>
         <Grid size={{ xs: 12, md: 9 }} sx={{ p: { xs: 2, md: 1 } }}>
           <Stack spacing={1}>
-            <Box sx={{width: "100%", backgroundColor: "white"}}>
+            <Box sx={{ width: "100%", backgroundColor: "white" }}>
               <DashboardHeader
                 title={titles[activeTab] || activeTab}
                 onOpenMenu={handleDrawerToggle}

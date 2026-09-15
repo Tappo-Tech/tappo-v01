@@ -17,7 +17,7 @@ import AddIcon from "@mui/icons-material/Add";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 // CONTEXTS
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 function MenuItemCard({ itemDetails }) {
   const { addToCart } = useCart();

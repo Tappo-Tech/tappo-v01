@@ -14,7 +14,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SaveIcon from "@mui/icons-material/Save";
 
 // CONTEXT
-import { useStore } from "../context/StoreInfoContext";
+import { useStore } from "../../../context/StoreInfoContext";
 
 function StoreInfoSettings() {
   const { storeInfo, updateStoreInfo } = useStore();

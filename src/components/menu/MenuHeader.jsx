@@ -8,41 +8,43 @@ import { Box, Stack, Chip, Typography } from "@mui/material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 
 // CONTEXTS
-import { useStore } from "../context/StoreInfoContext";
+import { useStore } from "../../context/StoreInfoContext";
 
 function MenuHeader({ table }) {
+  // Context: استخراج بيانات المحل (الاسم والوصف) لعرضها في الهيدر الرئيسي للمنيو
   const { storeInfo } = useStore();
 
   return (
     <Box sx={{ pb: 1 }}>
+      {/* TITLE & TABLE NUMBER */}
       <Stack
         direction="row"
         sx={{
-          display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           mb: 2.5,
         }}
       >
+        {/* STORE NAME AND TAGLINE */}
         <Box>
           <Typography
             variant="h4"
             component="h1"
             sx={{ fontWeight: 800, letterSpacing: "-0.5px", mb: 0.5 }}
           >
-            {storeInfo.storeName}
+            {storeInfo?.storeName || "اسم المتجر"}
           </Typography>
           <Typography
             variant="body2"
             component="p"
             sx={{ color: "text.secondary", fontWeight: 500 }}
           >
-            {storeInfo.storeDisc}
+            {storeInfo?.storeDisc || "أهلاً بك، اختر طلبك من المنيو"}
           </Typography>
         </Box>
 
+        {/* TABLE NUMBER BADGE */}
         <Chip
-          color="secondary.main"
           icon={
             <PlaceOutlinedIcon
               sx={{ fontSize: "1.1rem !important", ml: "4px !important" }}
@@ -65,6 +67,7 @@ function MenuHeader({ table }) {
         />
       </Stack>
 
+      {/* MENU SEARCH BAR COMPONENT */}
       <MenuSearchBar />
     </Box>
   );

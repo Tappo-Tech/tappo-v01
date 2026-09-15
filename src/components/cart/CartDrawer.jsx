@@ -16,8 +16,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 
 // CONTEXTS
-import { useCart } from "../context/CartContext";
-import { useOrders } from "../context/OrdersContext";
+import { useCart } from "../../context/CartContext";
+import { useOrders } from "../../context/OrdersContext";
 
 // OTHERS
 import { v4 as uuidV4 } from "uuid";

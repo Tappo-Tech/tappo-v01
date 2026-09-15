@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 
 // CONTEXT
-import { useUser } from "../context/UserContext";
+import {useUser} from "../../../context/UserContext"
 
 // HOOKS 
 import { useState } from "react";

@@ -5,8 +5,8 @@ import MenuItemCard from "./MenuItemCard";
 import Box from "@mui/material/Box";
 
 // DATA
-import { useMenu } from "../context/MenuContext";
-import { useCart } from "../context/CartContext";
+import { useMenu } from "../../context/MenuContext";
+import { useCart } from "../../context/CartContext";
 
 function MenuItemsList() {
   const { filteredMenu } = useMenu();

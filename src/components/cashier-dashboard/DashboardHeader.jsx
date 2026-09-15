@@ -15,7 +15,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 
 // DATA
-import { currentUserMock } from "../data/mockData";
+import { currentUserMock } from "../../data/mockData";
 
 const currentDate = new Date().toLocaleDateString("ar-EG", {
   weekday: "long",
@@ -35,8 +35,11 @@ function DashboardHeader({ title, onOpenMenu, notificationsCount = 0 }) {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box sx={{backgroundColor: "white", width: "100%", p: { xs: 1, md: 2 } }}>
-      <Stack direction={"row"} sx={{ justifyContent: "space-between", alignItems: "center" }}>
+    <Box sx={{ backgroundColor: "white", width: "100%", p: { xs: 1, md: 2 } }}>
+      <Stack
+        direction={"row"}
+        sx={{ justifyContent: "space-between", alignItems: "center" }}
+      >
         {isMobile && (
           <IconButton color="inherit" onClick={onOpenMenu} edge="start">
             <MenuIcon />

@@ -2,8 +2,7 @@
 import { ToggleButton, ToggleButtonGroup, Box } from "@mui/material";
 
 // CONTEXTS
-import { useMenu } from "../context/MenuContext";
-
+import { useMenu } from "../../context/MenuContext";
 
 function MenuFilterTabs() {
   const { categoriesList, selectedCategories, handleAlignment } = useMenu();
@@ -15,11 +14,11 @@ function MenuFilterTabs() {
   ));
 
   return (
-    <Box 
-      sx={{ 
-        width: "100%", 
-        overflowX: "auto", 
-        py: 1, 
+    <Box
+      sx={{
+        width: "100%",
+        overflowX: "auto",
+        py: 1,
         mb: 2,
         "&::-webkit-scrollbar": { display: "none" },
         scrollbarWidth: "none",
