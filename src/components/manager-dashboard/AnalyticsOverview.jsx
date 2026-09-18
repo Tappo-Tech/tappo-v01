@@ -19,7 +19,7 @@ function AnalyticsOverview() {
   } = useAnalytics();
 
   return (
-    <Box sx={{ mb: 4, pt: 3 }}>
+    <Box sx={{ mb: 1, pt: 3 }}>
       {/* HEADING */}
       <Box sx={{ mb: 3 }}>
         <Typography

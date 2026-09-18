@@ -55,18 +55,18 @@ function SalesTrendChart() {
           aria-label="analytics view toggle"
         >
           <Button
-            variant={isDaily ? "contained" : "outlined"}
-            onClick={() => setViewType("daily")}
-            sx={{ borderRadius: "8px" }}
-          >
-            يومي
-          </Button>
-          <Button
             variant={!isDaily ? "contained" : "outlined"}
             onClick={() => setViewType("weekly")}
             sx={{ borderRadius: "8px" }}
           >
             أسبوعي
+          </Button>
+          <Button
+            variant={isDaily ? "contained" : "outlined"}
+            onClick={() => setViewType("daily")}
+            sx={{ borderRadius: "8px" }}
+          >
+            يومي
           </Button>
         </ButtonGroup>
       </Box>
