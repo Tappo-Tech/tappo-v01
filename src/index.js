@@ -17,6 +17,7 @@ import { OrdersProvider } from "./context/OrdersContext";
 import { HistoryProvider } from "./context/HistoryContext";
 import { StoreInfoProvider } from "./context/StoreInfoContext";
 import { UserProvider } from "./context/UserContext";
+import { AnalyticsProvider } from "./context/AnalyticsContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -28,10 +29,12 @@ root.render(
             <HistoryProvider>
               <StoreInfoProvider>
                 <UserProvider>
-                  <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <App />
-                  </ThemeProvider>
+                  <AnalyticsProvider>
+                    <ThemeProvider theme={theme}>
+                      <CssBaseline />
+                      <App />
+                    </ThemeProvider>
+                  </AnalyticsProvider>
                 </UserProvider>
               </StoreInfoProvider>
             </HistoryProvider>

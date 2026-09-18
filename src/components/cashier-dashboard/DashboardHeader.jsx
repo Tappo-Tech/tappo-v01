@@ -14,8 +14,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 
-// DATA
-import { currentUserMock } from "../../data/mockData";
+// CONTEXTS
+import { useUser } from "../../context/UserContext";
 
 const currentDate = new Date().toLocaleDateString("ar-EG", {
   weekday: "long",
@@ -25,14 +25,25 @@ const currentDate = new Date().toLocaleDateString("ar-EG", {
 });
 
 function stringAvatar(name) {
+  if (!name) return { children: "M" };
+
+  const nameParts = name.trim().split(" ");
+  const initials =
+    nameParts.length > 1
+      ? `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase()
+      : nameParts[0][0].toUpperCase();
+
   return {
-    children: name ? name.trim()[0].toUpperCase() : "U",
+    children: initials,
   };
 }
 
 function DashboardHeader({ title, onOpenMenu, notificationsCount = 0 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const { user } = useUser();
+  const userName = user?.name || "Manager";
 
   return (
     <Box sx={{ backgroundColor: "white", width: "100%", p: { xs: 1, md: 2 } }}>
@@ -86,17 +97,16 @@ function DashboardHeader({ title, onOpenMenu, notificationsCount = 0 }) {
           </IconButton>
 
           <Avatar
-            src={currentUserMock.avatar}
-            alt={currentUserMock.name}
-            {...stringAvatar(currentUserMock.name)}
-            sx={{
-              width: { xs: 36, md: 40 },
-              height: { xs: 36, md: 40 },
-              fontSize: { xs: "0.875rem", md: "1rem" },
-              fontWeight: 700,
-              bgcolor: "primary.main",
-            }}
-          />
+          {...stringAvatar(userName)}
+          sx={{
+            width: { xs: 36, md: 40 },
+            height: { xs: 36, md: 40 },
+            fontSize: { xs: "0.875rem", md: "0.95rem" },
+            fontWeight: 700,
+            backgroundColor: "primary.main",
+            color: "secondary.contrastText",
+          }}
+        />
         </Box>
       </Stack>
     </Box>
