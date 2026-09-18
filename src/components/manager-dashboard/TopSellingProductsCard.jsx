@@ -12,35 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import { useAnalytics } from "../../context/AnalyticsContext";
 
 function TopSellingProductsCard() {
-  const { todaysOrders } = useAnalytics();
-
-  // 1. تجميع المبيعات والكميات والإجمالي حسب المنتج
-  const itemSalesMap = {};
-
-  todaysOrders?.forEach((order) => {
-    order.items?.forEach((item) => {
-      const name = item.name;
-      const quantity = item.quantity || 1;
-      const price = item.price || 0;
-
-      if (!itemSalesMap[name]) {
-        itemSalesMap[name] = { quantity: 0, totalRevenue: 0 };
-      }
-
-      itemSalesMap[name].quantity += quantity;
-      itemSalesMap[name].totalRevenue += quantity * price;
-    });
-  });
-
-  // 2. ترتيب المنتجات حسب الأكثر بيعاً واختيار أعلى 3
-  const topProducts = Object.entries(itemSalesMap)
-    .map(([name, data]) => ({
-      name,
-      quantity: data.quantity,
-      totalRevenue: data.totalRevenue,
-    }))
-    .sort((a, b) => b.quantity - a.quantity)
-    .slice(0, 3);
+  const { topProducts } = useAnalytics();
 
   // بيانات fallback مطابقة للصورة في حال عدم وجود طلبات
   const displayProducts =
@@ -75,7 +47,7 @@ function TopSellingProductsCard() {
               fontSize: "1.1rem",
             }}
           >
-            أعلى الأصناف طلباً
+            أعلى 3 أصناف طلباً
           </Typography>
         </Box>
 

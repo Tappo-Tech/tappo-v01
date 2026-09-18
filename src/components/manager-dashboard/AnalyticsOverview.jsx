@@ -18,6 +18,26 @@ function AnalyticsOverview() {
     ordersGrowth,
   } = useAnalytics();
 
+  // دالة مساعدة لتنسيق شريحة نسبة النمو ديناميكياً
+  const renderGrowthChip = (growthValue) => {
+    const val = Number(growthValue);
+    const isPositive = val >= 0;
+
+    return (
+      <Chip
+        label={`${isPositive ? "+" : ""} ${val}%`}
+        size="small"
+        sx={{
+          backgroundColor: isPositive ? "#e8f5e9" : "#ffebee",
+          color: isPositive ? "#2e7d32" : "#c62828",
+          fontWeight: 700,
+          borderRadius: "8px",
+          direction: "ltr", // للحفاظ على ترتيب الإشارة والنسبة المئوية
+        }}
+      />
+    );
+  };
+
   return (
     <Box sx={{ mb: 1, pt: 3 }}>
       {/* HEADING */}
@@ -93,16 +113,7 @@ function AnalyticsOverview() {
                   ر.س
                 </Typography>
               </Typography>
-              <Chip
-                label={`${salesGrowth}% +`}
-                size="small"
-                sx={{
-                  backgroundColor: "#e8f5e9",
-                  color: "#2e7d32",
-                  fontWeight: 700,
-                  borderRadius: "8px",
-                }}
-              />
+              {renderGrowthChip(salesGrowth)}
             </Box>
           </CardContent>
         </Card>
@@ -146,16 +157,7 @@ function AnalyticsOverview() {
                   ر.س
                 </Typography>
               </Typography>
-              <Chip
-                label={`${aovGrowth}% +`}
-                size="small"
-                sx={{
-                  backgroundColor: "#e8f5e9",
-                  color: "#2e7d32",
-                  fontWeight: 700,
-                  borderRadius: "8px",
-                }}
-              />
+              {renderGrowthChip(aovGrowth)}
             </Box>
           </CardContent>
         </Card>
@@ -190,18 +192,9 @@ function AnalyticsOverview() {
               }}
             >
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                {todaysOrders.length}{" "}
+                {todaysOrders.length}
               </Typography>
-              <Chip
-                label={`${ordersGrowth}% +`}
-                size="small"
-                sx={{
-                  backgroundColor: "#e8f5e9",
-                  color: "#2e7d32",
-                  fontWeight: 700,
-                  borderRadius: "8px",
-                }}
-              />
+              {renderGrowthChip(ordersGrowth)}
             </Box>
           </CardContent>
         </Card>
