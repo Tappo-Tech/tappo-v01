@@ -8,6 +8,7 @@ import RecentOrdersCard from "../components/manager-dashboard/RecentOrdersCard";
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 function Manager() {
   return (
@@ -22,23 +23,16 @@ function Manager() {
       >
         <AnalyticsOverview />
         <SalesTrendChart />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "nowrap",
-            justifyContent: "space-between",
-            gap: 3,
-          }}
-        >
-          <Box sx={{ width: "50%" }}>
-            <TopSellingProductsCard />
-          </Box>
 
-          <Box sx={{ width: "50%" }}>
+        {/* الحاوية المتجاوبة للكارتين */}
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <TopSellingProductsCard />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <RecentOrdersCard />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </Container>
     </Box>
   );
