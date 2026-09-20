@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Chip from "@mui/material/Chip";
 
 // CONTEXTS
-import { useAnalytics } from "../../context/AnalyticsContext";
+import { useAnalytics } from "../../../context/AnalyticsContext";
 
 function AnalyticsOverview() {
   const {

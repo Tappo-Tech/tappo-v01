@@ -11,7 +11,7 @@ import { useTheme } from "@mui/material/styles";
 import { BarChart } from "@mui/x-charts/BarChart";
 
 // CONTEXTS
-import { useAnalytics } from "../../context/AnalyticsContext";
+import { useAnalytics } from "../../../context/AnalyticsContext";
 
 function SalesTrendChart() {
   const theme = useTheme();

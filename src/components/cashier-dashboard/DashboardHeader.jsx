@@ -6,16 +6,11 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 
-// MUI HOOKS
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-
 // ICONS
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import MenuIcon from "@mui/icons-material/Menu";
 
 // CONTEXTS
-import { useUser } from "../../context/UserContext";
+import { useUser } from "../../context/UserContext"; 
 
 const currentDate = new Date().toLocaleDateString("ar-EG", {
   weekday: "long",
@@ -25,7 +20,7 @@ const currentDate = new Date().toLocaleDateString("ar-EG", {
 });
 
 function stringAvatar(name) {
-  if (!name) return { children: "M" };
+  if (!name) return { children: "C" };
 
   const nameParts = name.trim().split(" ");
   const initials =
@@ -38,36 +33,33 @@ function stringAvatar(name) {
   };
 }
 
-function DashboardHeader({ title, onOpenMenu, notificationsCount = 0 }) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+function DashboardHeader({ notificationsCount = 0 }) {
   const { user } = useUser();
-  const userName = user?.name || "Manager";
+  const userName = user?.name || "Cashier";
 
   return (
-    <Box sx={{ backgroundColor: "white", width: "100%", p: { xs: 1, md: 2 } }}>
+    <Box sx={{ width: "100%" }}>
       <Stack
-        direction={"row"}
-        sx={{ justifyContent: "space-between", alignItems: "center" }}
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+        }}
       >
-        {isMobile && (
-          <IconButton color="inherit" onClick={onOpenMenu} edge="start">
-            <MenuIcon />
-          </IconButton>
-        )}
-
+        {/* العنوان والتاريخ */}
         <Box sx={{ textAlign: "start" }}>
           <Typography
             variant="h5"
-            component={"h2"}
+            component="h2"
             sx={{
-              fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.75rem" },
+              fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.6rem" },
               fontWeight: 800,
               color: "text.primary",
+              letterSpacing: "-0.02em",
             }}
           >
-            {title}
+            الطلبات الحالية
           </Typography>
           <Typography
             variant="body2"
@@ -75,39 +67,41 @@ function DashboardHeader({ title, onOpenMenu, notificationsCount = 0 }) {
               fontSize: { xs: "0.75rem", sm: "0.85rem" },
               fontWeight: 500,
               color: "text.secondary",
-              mt: 0.5,
+              mt: 0.3,
             }}
           >
-            {currentDate} | شاشة الكاشير \ المطبخ
+            {currentDate} | شاشة الكاشير والمطبخ
           </Typography>
         </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "end",
-            gap: "10px",
-          }}
-        >
-          <IconButton sx={{ color: "text.secondary" }}>
+        {/* الإشعارات والبروفايل */}
+        <Stack direction="row" spacing={4} alignItems="end">
+          <IconButton
+            sx={{
+              color: "text.secondary",
+              border: "1px solid",
+              borderColor: "divider",
+              p: { xs: 1, sm: 1.2 },
+            }}
+          >
             <Badge badgeContent={notificationsCount} color="error">
-              <NotificationsIcon sx={{ fontSize: { xs: 22, md: 24 } }} />
+              <NotificationsIcon sx={{ fontSize: { xs: 20, md: 22 } }} />
             </Badge>
           </IconButton>
 
           <Avatar
-          {...stringAvatar(userName)}
-          sx={{
-            width: { xs: 36, md: 40 },
-            height: { xs: 36, md: 40 },
-            fontSize: { xs: "0.875rem", md: "0.95rem" },
-            fontWeight: 700,
-            backgroundColor: "primary.main",
-            color: "secondary.contrastText",
-          }}
-        />
-        </Box>
+            {...stringAvatar(userName)}
+            sx={{
+              width: { xs: 38, md: 42 },
+              height: { xs: 38, md: 42 },
+              fontSize: { xs: "0.875rem", md: "0.95rem" },
+              fontWeight: 700,
+              backgroundColor: "primary.main",
+              color: "primary.contrastText",
+              boxShadow: "0px 2px 6px rgba(0,0,0,0.08)",
+            }}
+          />
+        </Stack>
       </Stack>
     </Box>
   );

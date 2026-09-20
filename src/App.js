@@ -1,7 +1,7 @@
 // COMPONENTS
 import Menu from "./pages/Menu";
-import Dashboard from "./pages/Dashboard";
-import Manager from "./pages/Manager";
+import CashierDashboard from "./pages/CashierDashboard";
+import ManagerDashboard from "./pages/ManagerDashboard";
 import NotFound from "./components/NotFound";
 
 // STYLES
@@ -15,8 +15,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/menu/:tableNumber?" element={<Menu />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/manager" element={<Manager />} />
+        <Route path="/dashboard" element={<CashierDashboard />} />
+        <Route path="/manager" element={<ManagerDashboard />} />
         <Route
           path="*"
           element={

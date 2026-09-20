@@ -12,19 +12,22 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 // ICONS
-import ShowChartOutlinedIcon from "@mui/icons-material/ShowChartOutlined";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
 
+// عناصر القائمة المحدثة لتغطي كل مكونات النظام
 const navItems = [
-  { id: "orders", label: "الطلبات الحية", icon: <ShowChartOutlinedIcon /> },
+  { id: "manager", label: "لوحة النظرة العامة", icon: <DashboardOutlinedIcon /> },
   { id: "menu", label: "التحكم في المنيو", icon: <TuneOutlinedIcon /> },
+  { id: "qrGen", label: "أكواد الطاولات (QR)", icon: <QrCode2OutlinedIcon /> },
   { id: "history", label: "سجل الطلبات", icon: <ReceiptLongOutlinedIcon /> },
-  { id: "settings", label: "الاعدادات", icon: <SettingsOutlinedIcon /> },
+  { id: "settings", label: "الإعدادات", icon: <SettingsOutlinedIcon /> },
 ];
 
-function DashboardSidebar({
+function ManagerSidebar({
   mobileOpen,
   handleDrawerToggle,
   activeTab,
@@ -57,27 +60,30 @@ function DashboardSidebar({
       onClose={handleDrawerToggle}
       onOpen={() => {}}
       ModalProps={{
-        keepMounted: true,
+        keepMounted: true, // تحسين الأداء على أجهزة الموبايل
       }}
       sx={{
         width: 273,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: 276,
+          width: 273,
           boxSizing: "border-box",
           backgroundColor: "secondary.main",
           color: "secondary.contrastText",
+          borderLeft: "1px solid",
+          borderColor: "divider",
         },
       }}
     >
       <Box sx={{ p: 2 }}>
+        {/* الشعار واسم التطبيق */}
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
             gap: "10px",
             alignItems: "center",
-            justifyContent: "start",
+            justifyContent: "flex-start",
             px: 1,
             pt: 2,
           }}
@@ -89,7 +95,7 @@ function DashboardSidebar({
             sx={{ width: 35, height: 35, borderRadius: 0.8 }}
           />
           <Typography
-            sx={{ fontSize: "25px", fontWeight: "800" }}
+            sx={{ fontSize: "25px", fontWeight: "800", letterSpacing: "0.5px" }}
             variant="h4"
             component="h1"
           >
@@ -97,6 +103,7 @@ function DashboardSidebar({
           </Typography>
         </Box>
 
+        {/* قائمة عناصر السايد بار */}
         <Box sx={{ pt: 4 }}>
           <List
             disablePadding
@@ -128,4 +135,4 @@ function DashboardSidebar({
   );
 }
 
-export default DashboardSidebar;
+export default ManagerSidebar;

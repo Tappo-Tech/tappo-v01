@@ -6,7 +6,7 @@ import AddItemDrawer from "./AddItemDrawer";
 
 // MUI COMPONENTS
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid"; 
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -26,7 +26,7 @@ function MenuControl() {
   const [itemToEdit, setItemToEdit] = useState(null);
 
   const {
-    filteredMenu,
+    filteredMenu = [],
     searchQuery,
     setSearchQuery,
     deleteItem,
@@ -90,12 +90,15 @@ function MenuControl() {
           <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <Card
               sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
                 borderRadius: "12px",
                 border: "1px solid",
                 borderColor: "divider",
                 boxShadow: "none",
                 opacity: product.available ? 1 : 0.6,
-                transition: "0.2s",
+                transition: "opacity 0.2s ease-in-out",
               }}
             >
               <CardMedia
@@ -105,13 +108,14 @@ function MenuControl() {
                 alt={product.name}
               />
 
-              <CardContent sx={{ p: 2 }}>
+              <CardContent sx={{ p: 2, flexGrow: 1 }}>
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     mb: 1,
+                    gap: 1,
                   }}
                 >
                   <Typography
@@ -122,16 +126,23 @@ function MenuControl() {
                   </Typography>
                   <Typography
                     variant="subtitle1"
-                    sx={{ fontWeight: 700, color: "primary.main" }}
+                    sx={{ fontWeight: 700, color: "primary.main", whiteSpace: "nowrap" }}
                   >
-                    ر.س{Number(product.price).toFixed(2)}
+                    ر.س {Number(product.price || 0).toFixed(2)}
                   </Typography>
                 </Box>
 
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ mb: 1.5, minHeight: 40 }}
+                  sx={{
+                    mb: 1.5,
+                    minHeight: 40,
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
                 >
                   {product.description}
                 </Typography>
@@ -139,7 +150,7 @@ function MenuControl() {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={product.available}
+                      checked={Boolean(product.available)}
                       onChange={() => toggleAvailable(product.id)}
                       color="success"
                       size="small"
@@ -165,6 +176,7 @@ function MenuControl() {
                 <IconButton
                   size="small"
                   color="primary"
+                  aria-label="تعديل"
                   onClick={() => handleOpenEdit(product)}
                 >
                   <EditIcon fontSize="small" />
@@ -173,6 +185,7 @@ function MenuControl() {
                 <IconButton
                   size="small"
                   color="error"
+                  aria-label="حذف"
                   onClick={() => deleteItem(product.id)}
                 >
                   <DeleteOutlinedIcon fontSize="small" />

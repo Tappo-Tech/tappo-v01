@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
+// ANIMATION
+import { motion } from "framer-motion";
+
 // ICONS
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
@@ -20,165 +23,200 @@ function OrderItemCard({ order }) {
   const { updateOrderStatus } = useOrders();
 
   return (
-    <Card
-      sx={{
-        width: "100%",
-        mb: 2,
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: "12px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-        overflow: "hidden",
-      }}
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 15, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+      style={{ marginBottom: "16px" }}
     >
-      <Box
+      <Card
+        elevation={0}
         sx={{
-          p: 2,
-          pb: 1.5,
-          display: "flex",
-          justify: "space-between",
-          alignItems: "center",
+          width: "100%",
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: "16px",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.02)",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
+            borderColor: "primary.light",
+          },
         }}
       >
-        <Typography
-          variant="subtitle1"
-          sx={{ fontWeight: 700, color: "text.primary" }}
+        {/* هيدر الكارت */}
+        <Box
+          sx={{
+            p: 2,
+            pb: 1.5,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          طاولة {order.tableNumber}
-        </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 800, color: "text.primary" }}
+          >
+            طاولة {order.tableNumber}
+          </Typography>
 
-        <Typography
-          variant="caption"
-          sx={{ color: "text.secondary", fontWeight: 500, fontSize: "0.8rem" }}
-        >
-          {formatTimeAgo(order.createdAt)}
-        </Typography>
-      </Box>
-
-      <Divider variant="middle" />
-
-      <CardContent sx={{ p: 2, py: 1.5, "&:last-child": { pb: 1.5 } }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {order.items.map((item) => (
-            <Box
-              key={item.cartItemId || item.id}
-              sx={{
-                display: "flex",
-                justify: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 600, color: "text.primary" }}
-              >
-                {item.quantity}x : {item.name}
-              </Typography>
-
-              <Typography
-                variant="body2"
-                sx={{ color: "text.secondary", fontWeight: 500 }}
-              >
-                {item.price} ر.س
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-
-        {order.notes && (
-          <Box
+          <Typography
+            variant="caption"
             sx={{
-              mt: 1.5,
-              p: 1,
+              color: "text.secondary",
+              fontWeight: 600,
+              fontSize: "0.78rem",
+              bgcolor: "#f1f5f9",
+              px: 1,
+              py: 0.3,
               borderRadius: "6px",
-              bgcolor: "action.hover",
-              display: "flex",
-              alignItems: "center",
-              gap: 0.8,
             }}
           >
-            <FiberManualRecordIcon
-              sx={{ fontSize: 8, color: "warning.main" }}
-            />
-            <Typography
-              variant="caption"
-              sx={{ fontWeight: 600, color: "text.secondary" }}
-            >
-              ملاحظة: {order.notes}
-            </Typography>
-          </Box>
-        )}
-      </CardContent>
+            {formatTimeAgo(order.createdAt)}
+          </Typography>
+        </Box>
 
-      <CardActions sx={{ p: 1.5, pt: 0.5 }}>
-        {/* حالة الطلب جديد */}
-        {order.status === "pending" && (
-          <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
+        <Divider sx={{ borderStyle: "dashed" }} />
+
+        {/* عناصر الطلب */}
+        <CardContent sx={{ p: 2, py: 1.5, "&:last-child": { pb: 1.5 } }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            {order.items.map((item) => (
+              <Box
+                key={item.cartItemId || item.id}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 600, color: "text.primary" }}
+                >
+                  <Box
+                    component="span"
+                    sx={{ color: "primary.main", fontWeight: 800, mr: 0.5 }}
+                  >
+                    {item.quantity}x
+                  </Box>{" "}
+                  {item.name}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{ color: "text.secondary", fontWeight: 600 }}
+                >
+                  {item.price} ر.س
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+
+          {/* الملاحظات */}
+          {order.notes && (
+            <Box
+              sx={{
+                mt: 1.5,
+                p: 1.2,
+                borderRadius: "8px",
+                bgcolor: "warning.50",
+                border: "1px solid",
+                borderColor: "warning.100",
+                display: "flex",
+                alignItems: "center",
+                gap: 0.8,
+              }}
+            >
+              <FiberManualRecordIcon
+                sx={{ fontSize: 8, color: "warning.main" }}
+              />
+              <Typography
+                variant="caption"
+                sx={{ fontWeight: 700, color: "warning.dark" }}
+              >
+                ملاحظة: {order.notes}
+              </Typography>
+            </Box>
+          )}
+        </CardContent>
+
+        {/* أزرار الإجراءات */}
+        <CardActions sx={{ p: 1.5, pt: 0.5 }}>
+          {order.status === "pending" && (
+            <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
+              <Button
+                color="primary"
+                fullWidth
+                size="medium"
+                variant="contained"
+                disableElevation
+                onClick={() => updateOrderStatus(order.id, "preparing")}
+                sx={{ borderRadius: "10px", fontWeight: 700, py: 0.9 }}
+              >
+                بدء التحضير
+              </Button>
+              <Button
+                color="error"
+                size="medium"
+                variant="outlined"
+                onClick={() => updateOrderStatus(order.id, "cancelled")}
+                sx={{ borderRadius: "10px", fontWeight: 700, minWidth: "75px" }}
+              >
+                إلغاء
+              </Button>
+            </Box>
+          )}
+
+          {order.status === "preparing" && (
             <Button
-              color="primary"
+              color="info"
               fullWidth
               size="medium"
               variant="contained"
               disableElevation
-              onClick={() => updateOrderStatus(order.id, "preparing")}
-              sx={{ borderRadius: "8px", fontWeight: 700, py: 1 }}
+              onClick={() => updateOrderStatus(order.id, "ready")}
+              sx={{
+                borderRadius: "10px",
+                fontWeight: 700,
+                py: 0.9,
+                color: "white",
+              }}
             >
-              بدء التحضير
+              جاهز للتسليم
             </Button>
-            <Button
-              color="error"
-              size="medium"
-              variant="outlined"
-              onClick={() => updateOrderStatus(order.id, "cancelled")}
-              sx={{ borderRadius: "8px", fontWeight: 700, minWidth: "75px" }}
-            >
-              إلغاء
-            </Button>
-          </Box>
-        )}
+          )}
 
-        {/* حالة الطلب قيد التحضير */}
-        {order.status === "preparing" && (
-          <Button
-            color="info"
-            fullWidth
-            size="medium"
-            variant="contained"
-            disableElevation
-            onClick={() => updateOrderStatus(order.id, "ready")}
-            sx={{ borderRadius: "8px", fontWeight: 700, py: 1 }}
-          >
-            جاهز للتسليم
-          </Button>
-        )}
-
-        {/* حالة الطلب جاهز للتسليم */}
-        {order.status === "ready" && (
-          <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
-            <Button
-              color="success"
-              fullWidth
-              size="medium"
-              variant="contained"
-              disableElevation
-              onClick={() => updateOrderStatus(order.id, "served")}
-              sx={{ borderRadius: "8px", fontWeight: 700, py: 1 }}
-            >
-              تم الاستلام
-            </Button>
-            <Button
-              color="warning"
-              size="medium"
-              variant="outlined"
-              onClick={() => updateOrderStatus(order.id, "unclaimed")}
-              sx={{ borderRadius: "8px", fontWeight: 700, minWidth: "90px" }}
-            >
-              لم يُستلم
-            </Button>
-          </Box>
-        )}
-      </CardActions>
-    </Card>
+          {order.status === "ready" && (
+            <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
+              <Button
+                color="success"
+                fullWidth
+                size="medium"
+                variant="contained"
+                disableElevation
+                onClick={() => updateOrderStatus(order.id, "served")}
+                sx={{ borderRadius: "10px", fontWeight: 700, py: 0.9 }}
+              >
+                تم الاستلام
+              </Button>
+              <Button
+                color="warning"
+                size="medium"
+                variant="outlined"
+                onClick={() => updateOrderStatus(order.id, "unclaimed")}
+                sx={{ borderRadius: "10px", fontWeight: 700, minWidth: "90px" }}
+              >
+                لم يُستلم
+              </Button>
+            </Box>
+          )}
+        </CardActions>
+      </Card>
+    </motion.div>
   );
 }
 

@@ -9,7 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import Avatar from "@mui/material/Avatar";
 
 // CONTEXT
-import { useAnalytics } from "../../context/AnalyticsContext";
+import { useAnalytics } from "../../../context/AnalyticsContext";
 
 function TopSellingProductsCard() {
   const { topProducts } = useAnalytics();

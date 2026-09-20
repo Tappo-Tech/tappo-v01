@@ -6,6 +6,10 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
+
+// ANIMATION
+import { AnimatePresence } from "framer-motion";
 
 // CONTEXTS
 import { useOrders } from "../../../context/OrdersContext";
@@ -13,128 +17,77 @@ import { useOrders } from "../../../context/OrdersContext";
 // ICONS
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
+const COLUMNS = [
+  { key: "pending", title: "جديد", color: "warning" },
+  { key: "preparing", title: "جاري التحضير", color: "info" },
+  { key: "ready", title: "جاهز للتسليم", color: "success" },
+];
+
 function LiveOrders() {
   const { orders } = useOrders();
 
   const activeOrders = orders.filter((order) => !order.isCompleted);
 
-  const pendingOrders = activeOrders.filter(
-    (order) => order.status === "pending",
-  );
-  const preparingOrders = activeOrders.filter(
-    (order) => order.status === "preparing",
-  );
-  const readyOrders = activeOrders.filter((order) => order.status === "ready");
+  const getOrdersByStatus = (status) =>
+    activeOrders.filter((order) => order.status === status);
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Box
-          sx={{
-            mb: 2,
-            p: 1,
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justify: "start",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <FiberManualRecordIcon
-            fontSize="small"
-            sx={{ color: "warning.main" }}
-          />
-          <Typography variant="h6" fontWeight="bold">
-            جديد
-          </Typography>
-          <Chip
-            label={pendingOrders.length}
-            size="small"
-            sx={{
-              bgcolor: (theme) => theme.palette.warning.main + "15",
-              color: "warning.main",
-              fontWeight: "bold",
-              fontSize: "0.85rem",
-              height: "24px",
-            }}
-          />
-        </Box>
-        {pendingOrders.map((order) => (
-          <OrderItemCard key={order.id} order={order} />
-        ))}
-      </Grid>
+    <Grid container spacing={3}>
+      {COLUMNS.map((col) => {
+        const columnOrders = getOrdersByStatus(col.key);
 
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Box
-          sx={{
-            mb: 2,
-            p: 1,
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justify: "start",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <FiberManualRecordIcon fontSize="small" sx={{ color: "info.main" }} />
-          <Typography variant="h6" fontWeight="bold">
-            جاري التحضير
-          </Typography>
-          <Chip
-            label={preparingOrders.length}
-            size="small"
-            sx={{
-              bgcolor: (theme) => theme.palette.info.main + "15",
-              color: "info.main",
-              fontWeight: "bold",
-              fontSize: "0.85rem",
-              height: "24px",
-            }}
-          />
-        </Box>
-        {preparingOrders.map((order) => (
-          <OrderItemCard key={order.id} order={order} />
-        ))}
-      </Grid>
+        return (
+          <Grid key={col.key} size={{xs: 12, md: 4}}>
+            {/* عنوان العمود بنفس طابع لوحة التحكم */}
+            <Paper
+              elevation={0}
+              sx={{
+                p: 1.5,
+                mb: 2.5,
+                borderRadius: "14px",
+                border: "1px solid",
+                borderColor: "divider",
+                backgroundColor: "#f8fafc",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <FiberManualRecordIcon
+                  fontSize="small"
+                  sx={{ color: `${col.color}.main`, fontSize: 14 }}
+                />
+                <Typography variant="subtitle1" fontWeight={700}>
+                  {col.title}
+                </Typography>
+              </Box>
 
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Box
-          sx={{
-            mb: 2,
-            p: 1,
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justify: "start",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <FiberManualRecordIcon
-            fontSize="small"
-            sx={{ color: "success.main" }}
-          />
-          <Typography variant="h6" fontWeight="bold">
-            جاهز للتسليم
-          </Typography>
-          <Chip
-            label={readyOrders.length}
-            size="small"
-            sx={{
-              bgcolor: (theme) => theme.palette.success.main + "15",
-              color: "success.main",
-              fontWeight: "bold",
-              fontSize: "0.85rem",
-              height: "24px",
-            }}
-          />
-        </Box>
-        {readyOrders.map((order) => (
-          <OrderItemCard key={order.id} order={order} />
-        ))}
-      </Grid>
+              <Chip
+                label={columnOrders.length}
+                size="small"
+                sx={{
+                  bgcolor: (theme) => theme.palette[col.color].main + "18",
+                  color: `${col.color}.main`,
+                  fontWeight: 800,
+                  fontSize: "0.85rem",
+                  borderRadius: "8px",
+                  px: 0.5,
+                }}
+              />
+            </Paper>
+
+            {/* الحاوية ذات الانتقالات السلسة */}
+            <Box sx={{ minHeight: "200px" }}>
+              <AnimatePresence mode="popLayout">
+                {columnOrders.map((order) => (
+                  <OrderItemCard key={order.id} order={order} />
+                ))}
+              </AnimatePresence>
+            </Box>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 }

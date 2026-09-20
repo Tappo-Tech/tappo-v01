@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 import { useStore } from "../../../context/StoreInfoContext";
 
 function InvoiceModal({ open, onClose, order }) {
-  const { storeInfo } = useStore();
+  const { storeInfo = {} } = useStore();
 
   if (!order) return null;
 
@@ -27,19 +27,41 @@ function InvoiceModal({ open, onClose, order }) {
     window.print();
   };
 
+  const currency = storeInfo.currency || "ر.س";
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
+      <style>
+        {`
+          @media print {
+            body * {
+              visibility: hidden !important;
+            }
+            #printable-invoice, #printable-invoice * {
+              visibility: visible !important;
+            }
+            #printable-invoice {
+              position: absolute !important;
+              left: 0 !important;
+              top: 0 !important;
+              width: 100% !important;
+              padding: 0 !important;
+            }
+          }
+        `}
+      </style>
+
       <DialogContent id="printable-invoice">
         <Box sx={{ textAlign: "center", mb: 2 }}>
           {storeInfo.logoUrl && (
             <Box
               component="img"
               src={storeInfo.logoUrl}
-              alt={storeInfo.storeName}
+              alt={storeInfo.storeName || "Logo"}
               sx={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "8px",
+                width: 80,
+                height: 80,
+                borderRadius: 2,
                 objectFit: "cover",
                 mx: "auto",
                 mb: 1,
@@ -47,7 +69,7 @@ function InvoiceModal({ open, onClose, order }) {
             />
           )}
           <Typography variant="h6" sx={{ fontWeight: 900 }}>
-            {storeInfo.storeName}
+            {storeInfo.storeName || "المتجر"}
           </Typography>
 
           {storeInfo.taxNumber && (
@@ -61,7 +83,6 @@ function InvoiceModal({ open, onClose, order }) {
           )}
 
           <Typography
-            sx={{ mr: 1 }}
             variant="caption"
             color="text.secondary"
             display="block"
@@ -87,7 +108,7 @@ function InvoiceModal({ open, onClose, order }) {
         <Divider sx={{ borderStyle: "dashed", my: 1.5 }} />
 
         <Box sx={{ my: 2 }}>
-          {order.items.map((item, index) => (
+          {order.items?.map((item, index) => (
             <Box
               key={index}
               sx={{
@@ -100,7 +121,7 @@ function InvoiceModal({ open, onClose, order }) {
                 {item.name} × {item.quantity}
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                {item.price * item.quantity} {storeInfo.currency || "ر.س"}
+                {item.price * item.quantity} {currency}
               </Typography>
             </Box>
           ))}
@@ -126,7 +147,7 @@ function InvoiceModal({ open, onClose, order }) {
             المجموع الكلي:
           </Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: 900 }}>
-            {order.total} {storeInfo.currency || "ر.س"}
+            {order.total} {currency}
           </Typography>
         </Box>
 

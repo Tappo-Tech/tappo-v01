@@ -4,7 +4,7 @@ export const categories = [
   { id: "desserts", title: "حلويات ومخبوزات", icon: "🍰" },
 ];
 
-export const validTables = ['1', '2', '3', '4'];
+export const validTables = [];
 
 export const menuItems = [
   {

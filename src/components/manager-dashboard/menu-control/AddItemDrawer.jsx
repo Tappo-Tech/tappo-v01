@@ -50,7 +50,7 @@ const INITIAL_FORM_STATE = {
 };
 
 function AddItemDrawer({ open, onClose, itemToEdit = null }) {
-  const { addNewItem, updateItem, categoriesList } = useMenu();
+  const { addNewItem, updateItem, categoriesList = [] } = useMenu();
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
 
   useEffect(() => {
@@ -74,10 +74,13 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, image: imageUrl }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, image: reader.result }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -85,26 +88,25 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
     e.preventDefault();
     if (!formData.name || !formData.price) return;
 
+    const payload = {
+      name: formData.name,
+      price: parseFloat(formData.price),
+      categoryId: formData.categoryId || (categoriesList[0]?.id ?? "all"),
+      description: formData.description,
+      image: formData.image || "/logo-icon.png",
+      allergens: formData.allergens,
+    };
+
     if (itemToEdit) {
       updateItem({
         ...itemToEdit,
-        name: formData.name,
-        price: parseFloat(formData.price),
-        categoryId: formData.categoryId,
-        description: formData.description,
-        image: formData.image || "/logo-icon.png",
-        allergens: formData.allergens,
+        ...payload,
       });
     } else {
       addNewItem({
         id: uuidV4(),
-        name: formData.name,
-        price: parseFloat(formData.price),
-        categoryId: formData.categoryId || "all",
-        description: formData.description,
-        image: formData.image || "/logo-icon.png",
+        ...payload,
         available: true,
-        allergens: formData.allergens,
         quantity: 1,
       });
     }
@@ -114,7 +116,7 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
 
   return (
     <SwipeableDrawer
-      anchor="left"
+      anchor="right"
       open={open}
       onClose={onClose}
       onOpen={() => {}}
@@ -126,16 +128,27 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
         },
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
         <Typography variant="h6" sx={{ fontWeight: 700 }}>
           {itemToEdit ? "تعديل الصنف" : "إضافة صنف جديد"}
         </Typography>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} aria-label="إغلاق">
           <CloseIcon />
         </IconButton>
       </Box>
 
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
         <TextField
           label="اسم الصنف"
           name="name"
@@ -147,9 +160,10 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
         />
 
         <TextField
-          label="السعر ر.س"
+          label="السعر (ر.س)"
           name="price"
           type="number"
+          inputProps={{ min: 0, step: "0.01" }}
           value={formData.price}
           onChange={handleChange}
           size="small"
@@ -167,7 +181,7 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
           fullWidth
           required
         >
-          {categoriesList?.map((cat) => (
+          {categoriesList.map((cat) => (
             <MenuItem key={cat.id} value={cat.id}>
               {cat.title}
             </MenuItem>
@@ -183,15 +197,25 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
             fullWidth
           >
             {formData.image ? "تغيير الصورة" : "اختر صورة من جهازك"}
-            <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageChange} />
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
           </Button>
 
           {formData.image && (
             <Box
               component="img"
               src={formData.image}
-              alt="Preview"
-              sx={{ width: "100%", height: 120, objectFit: "cover", borderRadius: 1.5, mt: 0.5 }}
+              alt="معاينة الصورة"
+              sx={{
+                width: "100%",
+                height: 120,
+                objectFit: "cover",
+                borderRadius: 1.5,
+                mt: 0.5,
+              }}
             />
           )}
         </Box>
@@ -200,16 +224,29 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
           multiple
           options={COMMON_ALLERGENS}
           value={formData.allergens}
-          onChange={(event, newValue) => {
+          onChange={(_, newValue) => {
             setFormData((prev) => ({ ...prev, allergens: newValue }));
           }}
           renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip label={option} size="small" {...getTagProps({ index })} key={option} />
-            ))
+            value.map((option, index) => {
+              const { key, ...tagProps } = getTagProps({ index });
+              return (
+                <Chip
+                  key={key}
+                  label={option}
+                  size="small"
+                  {...tagProps}
+                />
+              );
+            })
           }
           renderInput={(params) => (
-            <TextField {...params} size="small" label="المواد المسببة للحساسية" placeholder="اختر المسببات..." />
+            <TextField
+              {...params}
+              size="small"
+              label="المواد المسببة للحساسية"
+              placeholder="اختر المسببات..."
+            />
           )}
           fullWidth
         />
@@ -226,10 +263,20 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
         />
 
         <Box sx={{ display: "flex", gap: 1.5, mt: 2 }}>
-          <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "primary.main", fontWeight: 700 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ bgcolor: "primary.main", fontWeight: 700 }}
+          >
             {itemToEdit ? "حفظ التعديلات" : "حفظ الصنف"}
           </Button>
-          <Button variant="outlined" color="inherit" fullWidth onClick={onClose}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            fullWidth
+            onClick={onClose}
+          >
             إلغاء
           </Button>
         </Box>

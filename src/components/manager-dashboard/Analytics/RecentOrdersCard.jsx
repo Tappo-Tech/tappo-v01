@@ -13,7 +13,7 @@ import Chip from "@mui/material/Chip";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 
 // CONTEXTS
-import { useAnalytics } from "../../context/AnalyticsContext";
+import { useAnalytics } from "../../../context/AnalyticsContext";
 
 function RecentOrdersCard() {
   const { recentOrders } = useAnalytics();
@@ -22,11 +22,32 @@ function RecentOrdersCard() {
   const getStatusChip = (status) => {
     switch (status) {
       case "completed":
-        return <Chip label="مكتمل" size="small" color="success" sx={{ fontSize: "0.7rem", height: 20 }} />;
+        return (
+          <Chip
+            label="مكتمل"
+            size="small"
+            color="success"
+            sx={{ fontSize: "0.7rem", height: 20 }}
+          />
+        );
       case "pending":
-        return <Chip label="قيد الانتظار" size="small" color="warning" sx={{ fontSize: "0.7rem", height: 20 }} />;
+        return (
+          <Chip
+            label="قيد الانتظار"
+            size="small"
+            color="warning"
+            sx={{ fontSize: "0.7rem", height: 20 }}
+          />
+        );
       default:
-        return <Chip label="جديد" size="small" color="primary" sx={{ fontSize: "0.7rem", height: 20 }} />;
+        return (
+          <Chip
+            label="جديد"
+            size="small"
+            color="primary"
+            sx={{ fontSize: "0.7rem", height: 20 }}
+          />
+        );
     }
   };
 
@@ -44,7 +65,15 @@ function RecentOrdersCard() {
     >
       <CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>
         {/* HEADER */}
-        <Box sx={{ mb: 2, textAlign: "start", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+          sx={{
+            mb: 2,
+            textAlign: "start",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Typography
             variant="h6"
             sx={{
@@ -55,7 +84,10 @@ function RecentOrdersCard() {
           >
             أحدث 3 طلبات اليوم
           </Typography>
-          <Typography variant="caption" sx={{ color: "#64748b", fontWeight: 600 }}>
+          <Typography
+            variant="caption"
+            sx={{ color: "#64748b", fontWeight: 600 }}
+          >
             مباشر (Real-time)
           </Typography>
         </Box>
@@ -74,7 +106,10 @@ function RecentOrdersCard() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between", // تم التعديل من justify إلى justifyContent
-                  borderBottom: index !== recentOrders.length - 1 ? "1px dashed #f1f5f9" : "none",
+                  borderBottom:
+                    index !== recentOrders.length - 1
+                      ? "1px dashed #f1f5f9"
+                      : "none",
                 }}
               >
                 {/* LEFT SIDE: TABLE & ORDER INFO */}
@@ -113,7 +148,13 @@ function RecentOrdersCard() {
                         fontSize: "0.8rem",
                       }}
                     >
-                      {order.items?.length || 0} عناصر • {order.createdAt ? new Date(order.createdAt).toLocaleTimeString("ar-SA", { hour: "2-digit", minute: "2-digit" }) : "الآن"}
+                      {order.items?.length || 0} عناصر •{" "}
+                      {order.createdAt
+                        ? new Date(order.createdAt).toLocaleTimeString(
+                            "ar-SA",
+                            { hour: "2-digit", minute: "2-digit" },
+                          )
+                        : "الآن"}
                     </Typography>
                   </Box>
                 </Box>
@@ -128,14 +169,24 @@ function RecentOrdersCard() {
                   }}
                 >
                   {(order.total || 0).toFixed(2)}{" "}
-                  <Typography component="span" sx={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748b" }}>
+                  <Typography
+                    component="span"
+                    sx={{
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      color: "#64748b",
+                    }}
+                  >
                     ر.س
                   </Typography>
                 </Typography>
               </ListItem>
             ))
           ) : (
-            <Typography variant="body2" sx={{ color: "#94a3b8", textAlign: "center", py: 3 }}>
+            <Typography
+              variant="body2"
+              sx={{ color: "#94a3b8", textAlign: "center", py: 3 }}
+            >
               لا توجد طلبات حديثة حالياً
             </Typography>
           )}

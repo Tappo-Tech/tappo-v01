@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import dayjs from "dayjs";
 
 import InvoiceModal from "./OrderPill";
 
 // CONTEXTS
 import { useOrders } from "../../../context/OrdersContext";
+import { useStore } from "../../../context/StoreInfoContext";
 
+// MUI COMPONENTS
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -26,72 +28,50 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
+// ICONS
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
+// DATE PICKER
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const renderStatusChip = (status) => {
-  switch (status) {
-    case "served":
-      return (
-        <Chip
-          label="تم التسليم"
-          color="success"
-          size="small"
-          variant="outlined"
-          sx={{ fontWeight: 700 }}
-        />
-      );
-    case "unclaimed":
-      return (
-        <Chip
-          label="غير مستلم"
-          color="warning"
-          size="small"
-          variant="outlined"
-          sx={{ fontWeight: 700 }}
-        />
-      );
-    case "cancelled":
-      return (
-        <Chip
-          label="ملغى"
-          color="error"
-          size="small"
-          variant="outlined"
-          sx={{ fontWeight: 700 }}
-        />
-      );
-    default:
-      return (
-        <Chip
-          label={status}
-          size="small"
-          variant="outlined"
-          sx={{ fontWeight: 700 }}
-        />
-      );
-  }
+  const statusMap = {
+    served: { label: "تم التسليم", color: "success" },
+    unclaimed: { label: "غير مستلم", color: "warning" },
+    cancelled: { label: "ملغى", color: "error" },
+  };
+
+  const config = statusMap[status] || { label: status, color: "default" };
+
+  return (
+    <Chip
+      label={config.label}
+      color={config.color}
+      size="small"
+      variant="outlined"
+      sx={{ fontWeight: 700 }}
+    />
+  );
 };
 
-function OrderRow({ order }) {
+function OrderRow({ order, currency }) {
   const [open, setOpen] = useState(false);
   const [openInvoice, setOpenInvoice] = useState(false);
 
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
+        <TableCell width={50}>
           <IconButton size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row" sx={{ fontWeight: 700 }}>
-          {order.id}
+          #{order.id}
         </TableCell>
         <TableCell align="center">طاولة {order.tableNumber}</TableCell>
         <TableCell align="center">
@@ -99,7 +79,7 @@ function OrderRow({ order }) {
         </TableCell>
         <TableCell align="center">{renderStatusChip(order.status)}</TableCell>
         <TableCell align="center" sx={{ fontWeight: 700 }}>
-          {order.total} ر.س
+          {order.total} {currency}
         </TableCell>
       </TableRow>
 
@@ -112,7 +92,7 @@ function OrderRow({ order }) {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  mb: 1,
+                  mb: 1.5,
                 }}
               >
                 <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
@@ -130,7 +110,7 @@ function OrderRow({ order }) {
               </Box>
 
               <Stack spacing={1} sx={{ mb: 2 }}>
-                {order.items.map((item, index) => (
+                {order.items?.map((item, index) => (
                   <Box
                     key={index}
                     sx={{
@@ -146,13 +126,13 @@ function OrderRow({ order }) {
                       {item.name} × {item.quantity}
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                      {item.price * item.quantity} ر.س
+                      {item.price * item.quantity} {currency}
                     </Typography>
                   </Box>
                 ))}
               </Stack>
               {order.notes && (
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="text.secondary" display="block">
                   ملاحظات: {order.notes}
                 </Typography>
               )}
@@ -171,53 +151,39 @@ function OrderRow({ order }) {
 }
 
 function OrdersHistory() {
-  const { orders } = useOrders();
+  const { orders = [] } = useOrders();
+  const { storeInfo } = useStore();
+  const currency = storeInfo?.currency || "ر.س";
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [statusFilter, setStatusFilter] = useState("all");
 
-  const filteredOrders = orders
-    .filter((order) => order.isCompleted)
-    .filter((order) => {
-      const matchesSearch =
-        order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.tableNumber.toString().includes(searchQuery);
+  const filteredOrders = useMemo(() => {
+    return orders
+      .filter((order) => order.isCompleted)
+      .filter((order) => {
+        const matchesSearch =
+          String(order.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
+          String(order.tableNumber).includes(searchQuery);
 
-      const matchesStatus =
-        statusFilter === "all" ? true : order.status === statusFilter;
+        const matchesStatus =
+          statusFilter === "all" ? true : order.status === statusFilter;
 
-      const matchesDate = selectedDate
-        ? dayjs(order.createdAt).isSame(selectedDate, "day")
-        : true;
+        const matchesDate = selectedDate
+          ? dayjs(order.createdAt).isSame(selectedDate, "day")
+          : true;
 
-      return matchesSearch && matchesStatus && matchesDate;
-    });
+        return matchesSearch && matchesStatus && matchesDate;
+      });
+  }, [orders, searchQuery, statusFilter, selectedDate]);
 
   return (
     <Box sx={{ p: { xs: 1, md: 2 } }}>
-      <style>
-        {`
-          @media print {
-            body * {
-              visibility: hidden;
-            }
-            #printable-invoice, #printable-invoice * {
-              visibility: visible;
-            }
-            #printable-invoice {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-            }
-          }
-        `}
-      </style>
-
       <Box
         sx={{
           display: "flex",
-          justify: "space-between",
+          justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
           gap: 2,
@@ -262,24 +228,12 @@ function OrdersHistory() {
               onChange={(newValue) => setSelectedDate(newValue)}
               format="YYYY/MM/DD"
               slotProps={{
+                field: { clearable: true, onClear: () => setSelectedDate(null) },
                 textField: {
                   size: "small",
                   InputLabelProps: { shrink: true },
                   sx: {
                     width: { xs: "100%", sm: 220 },
-                    "& .MuiOutlinedInput-root": {
-                      display: "flex",
-                      flexDirection: "row-reverse",
-                      justifyContent: "space-between",
-                      px: 1.5,
-                    },
-                    "& .MuiInputBase-input": {
-                      textAlign: "right",
-                      direction: "rtl",
-                    },
-                    "& .MuiInputAdornment-root": {
-                      margin: "0 !important",
-                    },
                   },
                 },
               }}
@@ -292,7 +246,7 @@ function OrdersHistory() {
         <Table>
           <TableHead sx={{ bgcolor: "action.hover" }}>
             <TableRow>
-              <TableCell width="50" />
+              <TableCell width={50} />
               <TableCell sx={{ fontWeight: 700 }}>رقم الطلب</TableCell>
               <TableCell align="center" sx={{ fontWeight: 700 }}>
                 الطاولة
@@ -311,11 +265,11 @@ function OrdersHistory() {
           <TableBody>
             {filteredOrders.length > 0 ? (
               filteredOrders.map((order) => (
-                <OrderRow key={order.id} order={order} />
+                <OrderRow key={order.id} order={order} currency={currency} />
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={6} align="center" sx={{ py: 3 }}>
+                <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                   <Typography color="text.secondary">
                     لا توجد طلبات مطابقة للفلترة الحالية
                   </Typography>

@@ -5,29 +5,23 @@ import MenuItemsList from "../components/menu/MenuItemsList";
 import FloatingCartBar from "../components/cart/FloatingCartBar";
 import CartDrawer from "../components/cart/CartDrawer";
 import NotFound from "../components/NotFound";
+import FloatingActions from "../components/menu/FloatingActions"; // 👈 استدعاء المكون هنا
 
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 
-// DATA
-import { validTables } from "../data/mockData";
-
 // CONTEXTS
 import { useCart } from "../context/CartContext";
+import { useTables } from "../context/TablesContext";
 
 // HOOKS
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function Menu() {
-  const [isOpen, setOpen] = useState(false); /*
-   state
-   مسؤلة من فتح  و قفل واظهار زر فتح السلة العائم السلة بناء علي الدالة 
-   (handleCartOpen) اللي بيتم ارساله (FloatingCartBar)
-   و هناك بيتم التاكد بشرط في حال كان متغير (cartItems) بيساوي 0 ما بيظهر الزر و برجع المكون null
-   و اذا لم يتحقق الشرط بيظهر الزر و في حال الضغط عليه بتتحول لترو في الدالة (handleCartOpen)
-   */
+  const [isOpen, setOpen] = useState(false);
+
   function handleCartOpen() {
     setOpen(true);
   }
@@ -36,36 +30,42 @@ function Menu() {
     setOpen(false);
   }
 
-  const { setTable } =
-    useCart(); /* دالة في ال(CartContext) مسؤلة عن ارسال رقم الطاولة اللي مستخرج عن طريق (useParams) */
+  const { tables } = useTables();
+  const { setTable } = useCart();
+  const { tableNumber } = useParams();
 
-  const { tableNumber } = useParams(); /* hook بيستخرج رقم الطاولة من الرابط */
-  const isValidTable =
-    validTables.includes(
-      tableNumber,
-    ); /* شرط بتحقق هل رقم الطاولة في الكائن المخزن فيه عدد او ارقام الطاولات  */
+  const isValidTable = tables.some(
+    (t) => String(t.tableNumber) === String(tableNumber)
+  );
 
   useEffect(() => {
-    if (tableNumber) {
+    if (isValidTable && tableNumber) {
       setTable(tableNumber);
-    } /* هنا بيتم ارسال رقم الطاولة الحالي لل CartContext عشان يتم ارساله و استعمالة في ال OrderContext */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    tableNumber,
-    isValidTable,
-    setTable,
-  ]); /* هنا استخدمت useEffect  عشان ما يتم ارسال رقم الطاولة في كل مرة يحصل فيها re-render و يتم ارساله في حال تغير الرقم او تغير ناتج الشرط اللي بيتحقق من وجوده في الكائن */
+    }
+  }, [tableNumber, isValidTable, setTable]);
+
+  // دالة التعامل مع نداء الجرسون
+  const handleCallWaiter = (data) => {
+    console.log("تم طلب الجرسون:", data);
+    // يمكنك إرسال الطلب لـ OrderContext أو إظهار التنبيه (Toast)
+  };
+
+  // دالة التعامل مع إرسال الرأي
+  const handleSubmitFeedback = (feedback) => {
+    console.log("تم استلام رأي جديد:", feedback);
+    // يمكنك هنا الإضافة لـ FeedbackContext الخاص بك
+  };
 
   if (!isValidTable) {
     return (
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" sx={{ py: 6 }}>
         <NotFound
           title="طاولة غير صالحة"
           message="عذراً، لم نتمكن من التعرف على رقم الطاولة. يرجى مسح رمز الـ QR الموجود على طاولتك مرة أخرى."
         />
       </Container>
     );
-  } /* هنا بيتم التحقق من الرقم و اذا كان غير موجود بيتم اظهار صفحة الخطاء */
+  }
 
   return (
     <Box
@@ -95,7 +95,14 @@ function Menu() {
         <MenuItemsList />
       </Container>
 
-      {/* SHOWING CART BUTTON AND CALCULATING THE PRICE */}
+      {/* FLOATING ACTIONS (SPEED DIAL) */}
+      <FloatingActions
+        tableNumber={tableNumber}
+        onCallWaiter={handleCallWaiter}
+        onSubmitFeedback={handleSubmitFeedback}
+      />
+
+      {/* SHOWING CART BUTTON */}
       <FloatingCartBar handleCartOpen={handleCartOpen} />
 
       {/* CART DRAWER */}

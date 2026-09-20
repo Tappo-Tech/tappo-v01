@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
 // MUI COMPONENTS
 import Box from "@mui/material/Box";
@@ -8,6 +8,9 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import MenuItem from "@mui/material/MenuItem";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 // MUI ICONS
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -16,10 +19,35 @@ import SaveIcon from "@mui/icons-material/Save";
 // CONTEXT
 import { useStore } from "../../../context/StoreInfoContext";
 
+const CURRENCIES = [
+  { value: "SAR", label: "ر.س (ريال سعودي)" },
+  { value: "SDG", label: "ج.س (جنيه سوداني)" },
+  { value: "AED", label: "د.إ (درهم إماراتي)" },
+  { value: "USD", label: "$ (دولار أمريكي)" },
+];
+
 function StoreInfoSettings() {
   const { storeInfo, updateStoreInfo } = useStore();
 
-  const [formData, setFormData] = useState({ ...storeInfo });
+  const [formData, setFormData] = useState({
+    storeName: "",
+    phone: "",
+    email: "",
+    taxNumber: "",
+    currency: "SAR",
+    address: "",
+    receiptFooter: "",
+    logoUrl: "",
+    ...storeInfo,
+  });
+
+  const [toast, setToast] = useState({ open: false, message: "", severity: "success" });
+
+  useEffect(() => {
+    if (storeInfo) {
+      setFormData((prev) => ({ ...prev, ...storeInfo }));
+    }
+  }, [storeInfo]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,26 +58,29 @@ function StoreInfoSettings() {
   };
 
   const handleLogoUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData((prev) => ({
-        ...prev,
-        logoUrl: imageUrl,
-      }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({
+          ...prev,
+          logoUrl: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     updateStoreInfo(formData);
-    alert("تم حفظ إعدادات الكافيه بنجاح!");
+    setToast({ open: true, message: "تم حفظ إعدادات الكافيه بنجاح!", severity: "success" });
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ pt: 1 }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ pt: 1, maxWidth: 900, mx: "auto" }}>
       <Grid container spacing={{ xs: 2, sm: 2.5 }}>
-        {/* Logo Upload Section - Full width on mobile */}
+        {/* Logo Upload Section */}
         <Grid size={{ xs: 12 }}>
           <Paper
             variant="outlined"
@@ -64,12 +95,12 @@ function StoreInfoSettings() {
             }}
           >
             <Avatar
-              src={formData.logoUrl}
+              src={formData.logoUrl || "/logo-icon.png"}
               alt={formData.storeName}
               variant="rounded"
               sx={{
-                width: 115,
-                height: 115,
+                width: 100,
+                height: 100,
                 border: "1px solid",
                 borderColor: "divider",
               }}
@@ -83,24 +114,24 @@ function StoreInfoSettings() {
                 flexGrow: 1,
               }}
             >
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: "20px" }}>
-                شعار الكافيه
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: "18px" }}>
+                شعار الكافيه / النشاط
               </Typography>
               <Typography
                 variant="caption"
                 color="text.secondary"
                 display="block"
-                sx={{ mb: 1, fontSize: "16px" }}
+                sx={{ mb: 1.5, fontSize: "14px" }}
               >
-                يظهر الشعار في أعلى الفواتير المطبوعة
+                يظهر الشعار في أعلى الفواتير المطبوعة وعلى تطبيق المنيو الرقمي
               </Typography>
               <Button
                 variant="outlined"
                 component="label"
-                size="medium"
+                size="small"
                 startIcon={<CloudUploadIcon />}
                 fullWidth={{ xs: true, sm: false }}
-                sx={{ borderRadius: "8px" }}
+                sx={{ borderRadius: "8px", alignSelf: { sm: "flex-start" } }}
               >
                 تغيير الشعار
                 <input
@@ -145,6 +176,7 @@ function StoreInfoSettings() {
             fullWidth
             label="البريد الإلكتروني"
             name="email"
+            type="email"
             value={formData.email || ""}
             onChange={handleInputChange}
             size="small"
@@ -160,19 +192,27 @@ function StoreInfoSettings() {
             value={formData.taxNumber || ""}
             onChange={handleInputChange}
             size="small"
+            placeholder="مثال: 300000000000003"
           />
         </Grid>
 
-        {/* Currency */}
+        {/* Currency Select */}
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
+            select
             fullWidth
             label="العملة"
             name="currency"
-            value={formData.currency || ""}
+            value={formData.currency || "SAR"}
             onChange={handleInputChange}
             size="small"
-          />
+          >
+            {CURRENCIES.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
 
         {/* Address */}
@@ -184,6 +224,7 @@ function StoreInfoSettings() {
             value={formData.address || ""}
             onChange={handleInputChange}
             size="small"
+            placeholder="مثال: الرياض - حي الملقا - طريق الملك فهد"
           />
         </Grid>
 
@@ -198,6 +239,7 @@ function StoreInfoSettings() {
             multiline
             rows={2}
             size="small"
+            placeholder="مثال: شكراً لزيارتكم! نتمنى لكم يوماً سعيداً."
           />
         </Grid>
 
@@ -217,7 +259,7 @@ function StoreInfoSettings() {
             fullWidth={{ xs: true, sm: false }}
             sx={{
               px: 4,
-              py: 1.2,
+              py: 1,
               borderRadius: "8px",
               fontWeight: 700,
             }}
@@ -226,6 +268,17 @@ function StoreInfoSettings() {
           </Button>
         </Grid>
       </Grid>
+
+      {/* Snackbar Alert */}
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={4000}
+        onClose={() => setToast((prev) => ({ ...prev, open: false }))}
+      >
+        <Alert severity={toast.severity} variant="filled" sx={{ width: "100%" }}>
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

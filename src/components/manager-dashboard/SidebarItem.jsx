@@ -6,37 +6,42 @@ import ListItemText from "@mui/material/ListItemText";
 
 function SidebarItem({ navItem, isSelected, onSelect }) {
   return (
-    <ListItem disablePadding sx={{ mb: 0 }}>
+    <ListItem disablePadding sx={{ mb: 0.5 }}>
       <ListItemButton
         selected={isSelected}
         onClick={onSelect}
         sx={{
-          borderRadius: "6px",
-          py: 1,
-          px: 1.5,
+          borderRadius: "8px",
+          py: 1.2,
+          px: 2,
           gap: 1.5,
           justifyContent: "flex-start",
+          transition: "all 0.2s ease-in-out",
+          // عند تحديد العنصر
           "&.Mui-selected": {
-            bgcolor: "rgba(255, 255, 255, 0.08)",
-            color: "common.white",
+            bgcolor: "rgba(255, 96, 46, 0.12)",
+            color: "#ff602e",
             "&:hover": {
-              bgcolor: "rgba(255, 255, 255, 0.12)",
+              bgcolor: "rgba(255, 96, 46, 0.18)",
             },
             "& .MuiListItemIcon-root": {
               color: "#ff602e",
             },
           },
+          // عند تمرير الماوس فوق العنصر غير المحدد
           "&:hover": {
-            bgcolor: "rgba(255, 255, 255, 0.05)",
+            bgcolor: "rgba(255, 255, 255, 0.08)",
           },
         }}
       >
         <ListItemIcon
           sx={{
             minWidth: "auto",
-            color: isSelected ? "#ff602e" : "inherit",
+            color: isSelected ? "#ff602e" : "rgba(255, 255, 255, 0.7)",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
+            transition: "color 0.2s ease-in-out",
           }}
         >
           {navItem.icon}
@@ -44,9 +49,12 @@ function SidebarItem({ navItem, isSelected, onSelect }) {
         <ListItemText
           primary={navItem.label}
           primaryTypographyProps={{
-            fontSize: "0.9rem",
+            fontSize: "0.95rem",
             fontWeight: isSelected ? 700 : 500,
-            sx: { textAlign: "start" },
+            sx: {
+              textAlign: "right",
+              color: isSelected ? "#ff602e" : "rgba(255, 255, 255, 0.87)",
+            },
           }}
         />
       </ListItemButton>
