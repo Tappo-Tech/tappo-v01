@@ -17,14 +17,20 @@ import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
+import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 
 // عناصر القائمة المحدثة لتغطي كل مكونات النظام
 const navItems = [
-  { id: "manager", label: "لوحة النظرة العامة", icon: <DashboardOutlinedIcon /> },
+  {
+    id: "manager",
+    label: "لوحة النظرة العامة",
+    icon: <DashboardOutlinedIcon />,
+  },
   { id: "menu", label: "التحكم في المنيو", icon: <TuneOutlinedIcon /> },
   { id: "qrGen", label: "أكواد الطاولات (QR)", icon: <QrCode2OutlinedIcon /> },
   { id: "history", label: "سجل الطلبات", icon: <ReceiptLongOutlinedIcon /> },
   { id: "settings", label: "الإعدادات", icon: <SettingsOutlinedIcon /> },
+  { id: "feedbacks", label: "اراء العملاء", icon: <RateReviewOutlinedIcon /> },
 ];
 
 function ManagerSidebar({

@@ -98,13 +98,29 @@ function QRCodeGenerate() {
           backgroundColor: "background.paper",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "start", gap: 1.5, mb: 2 }}>
           <QrCode2Icon color="primary" sx={{ fontSize: 32 }} />
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            <Typography
+              variant="h5"
+              component="h1"
+              sx={{
+                fontWeight: 800,
+                mb: 0.2,
+                color: "text.primary",
+                textAlign: "start",
+              }}
+            >
               توليد رموز QR للطاولات
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: "text.secondary",
+                fontWeight: 600,
+                textAlign: "start",
+              }}
+            >
               حدّد عدد الطاولات لتوليد كود المنيو الخاص بكل طاولة تلقائياً
             </Typography>
           </Box>
@@ -114,7 +130,7 @@ function QRCodeGenerate() {
 
         <Box component="form" onSubmit={handleGenerate}>
           <Grid container spacing={2} alignItems="center">
-            <Grid size={{xs: 12, sm: 6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -135,7 +151,7 @@ function QRCodeGenerate() {
               />
             </Grid>
 
-            <Grid size={{xs: 6, sm: 3}}>
+            <Grid size={{ xs: 6, sm: 3 }}>
               <Button
                 fullWidth
                 type="submit"
@@ -147,7 +163,7 @@ function QRCodeGenerate() {
               </Button>
             </Grid>
 
-            <Grid size={{xs: 6, sm: 3}}>
+            <Grid size={{ xs: 6, sm: 3 }}>
               <Button
                 fullWidth
                 variant="outlined"
@@ -192,7 +208,7 @@ function QRCodeGenerate() {
 
           <Grid container spacing={2.5}>
             {tables.map((table) => (
-              <Grid size={{xs: 12, sm: 6, md: 4}} key={table.id}>
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={table.id}>
                 <Card
                   id={`table-card-${table.id}`}
                   className="qr-card"

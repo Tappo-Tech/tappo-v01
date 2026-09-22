@@ -8,6 +8,7 @@ import MenuControl from "../components/manager-dashboard/menu-control/MenuContro
 import QRCodeGenerate from "../components/manager-dashboard/settings/QRCodesGenerate";
 import OrdersHistory from "../components/manager-dashboard/orders/OrdersHistory";
 import SettingsLayout from "../components/manager-dashboard/settings/SettingsLayout";
+import Feedbacks from "../components/manager-dashboard/Feedbacks";
 
 // MUI COMPONENTS
 import Box from "@mui/material/Box";
@@ -64,6 +65,7 @@ function ManagerDashboard() {
           {activeTab === "menu" && <MenuControl />}
           {activeTab === "settings" && <SettingsLayout />}
           {activeTab === "qrGen" && <QRCodeGenerate />}
+          {activeTab === "feedbacks" && <Feedbacks />}
         </Box>
       </Box>
     </Box>

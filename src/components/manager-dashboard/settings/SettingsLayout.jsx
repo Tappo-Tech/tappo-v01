@@ -42,10 +42,22 @@ function SettingsLayout() {
     <Box sx={{ p: { xs: 2, md: 3 }, maxWidth: 1000, mx: "auto" }}>
       {/* Header */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            fontWeight: 800,
+            mb: 0.2,
+            color: "text.primary",
+            textAlign: "start",
+          }}
+        >
           الإعدادات
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="subtitle1"
+          sx={{ color: "text.secondary", fontWeight: 600, textAlign: "start" }}
+        >
           إدارة بيانات الفرع والمعلومات الشخصية للحساب
         </Typography>
       </Box>

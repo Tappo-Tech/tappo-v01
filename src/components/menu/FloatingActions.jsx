@@ -13,11 +13,11 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
 
 // CONTEXT
-import { useCart } from "../../context/CartContext"; // 👈 تأكد من صحة مسار الـ Context لديك
+import { useCart } from "../../context/CartContext";
 
-function FloatingActions({ onOpenWaiter, onOpenFeedback }) {
+function FloatingActions({ handleReview, handleCallWaiter }) {
   const [openDial, setOpenDial] = useState(false);
-  const { cartItems } = useCart(); // 👈 استدعاء عناصر السلة
+  const { cartItems } = useCart();
 
   // التبديل الديناميكي للموقع بناءً على وجود عناصر في السلة
   const hasItemsInCart = cartItems && cartItems.length > 0;
@@ -32,7 +32,7 @@ function FloatingActions({ onOpenWaiter, onOpenFeedback }) {
       name: "نداء الجرسون",
       onClick: () => {
         handleDialClose();
-        if (onOpenWaiter) onOpenWaiter();
+        handleCallWaiter();
       },
     },
     {
@@ -40,7 +40,7 @@ function FloatingActions({ onOpenWaiter, onOpenFeedback }) {
       name: "شاركنا رأيك",
       onClick: () => {
         handleDialClose();
-        if (onOpenFeedback) onOpenFeedback();
+        handleReview();
       },
     },
   ];

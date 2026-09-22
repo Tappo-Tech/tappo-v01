@@ -5,7 +5,9 @@ import MenuItemsList from "../components/menu/MenuItemsList";
 import FloatingCartBar from "../components/cart/FloatingCartBar";
 import CartDrawer from "../components/cart/CartDrawer";
 import NotFound from "../components/NotFound";
-import FloatingActions from "../components/menu/FloatingActions"; // 👈 استدعاء المكون هنا
+import FloatingActions from "../components/menu/FloatingActions";
+import ReviewSection from "../components/menu/ReviewSection";
+import CallWaiterConfirm from "../components/menu/CallWaiterConfirm";
 
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
@@ -20,14 +22,18 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function Menu() {
-  const [isOpen, setOpen] = useState(false);
+  const [isCartOpen, setCartOpen] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [callingWaiterConfirmation, setCallingWaiterConfirmation] = useState(false);
 
+  // دالة فتح السلة
   function handleCartOpen() {
-    setOpen(true);
+    setCartOpen(true);
   }
 
+  // دالة اغلاق السلة
   function handleCartClose() {
-    setOpen(false);
+    setCartOpen(false);
   }
 
   const { tables } = useTables();
@@ -44,17 +50,25 @@ function Menu() {
     }
   }, [tableNumber, isValidTable, setTable]);
 
-  // دالة التعامل مع نداء الجرسون
-  const handleCallWaiter = (data) => {
-    console.log("تم طلب الجرسون:", data);
-    // يمكنك إرسال الطلب لـ OrderContext أو إظهار التنبيه (Toast)
+  // دالة فتح قسم الاراء
+  const handleReviewOpen = () => {
+    setReviewOpen(true);
   };
 
-  // دالة التعامل مع إرسال الرأي
-  const handleSubmitFeedback = (feedback) => {
-    console.log("تم استلام رأي جديد:", feedback);
-    // يمكنك هنا الإضافة لـ FeedbackContext الخاص بك
-  };
+  // دالة اغلاق قسم الاراء
+  const handleReviewClose = () => {
+    setReviewOpen(false);
+  }
+
+  // دالة فتح نافذة تاكيد استدعاء الويتر
+  const handleCallingWaiterConfirmationOpen = () => {
+    setCallingWaiterConfirmation(true);
+  }
+
+  // دالة اغلاق نافذة استدعاء الويتر
+  const handleCallingWaiterConfirmationClose = () => {
+    setCallingWaiterConfirmation(false);
+  }
 
   if (!isValidTable) {
     return (
@@ -97,16 +111,21 @@ function Menu() {
 
       {/* FLOATING ACTIONS (SPEED DIAL) */}
       <FloatingActions
-        tableNumber={tableNumber}
-        onCallWaiter={handleCallWaiter}
-        onSubmitFeedback={handleSubmitFeedback}
+        handleReview={handleReviewOpen}
+        handleCallWaiter={handleCallingWaiterConfirmationOpen}
       />
 
       {/* SHOWING CART BUTTON */}
       <FloatingCartBar handleCartOpen={handleCartOpen} />
 
       {/* CART DRAWER */}
-      <CartDrawer open={isOpen} close={handleCartClose} />
+      <CartDrawer open={isCartOpen} close={handleCartClose} />
+
+      {/* REVIEW SECTION */}
+      <ReviewSection open={reviewOpen} close={handleReviewClose} />
+
+      {/* CALLING WAITER CONFIRMATION */}
+      <CallWaiterConfirm open={callingWaiterConfirmation} close={handleCallingWaiterConfirmationClose} tableNumber={tableNumber} />
     </Box>
   );
 }
