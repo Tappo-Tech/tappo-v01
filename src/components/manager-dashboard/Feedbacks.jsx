@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // MUI COMPONENTS
 import {
   Box,
@@ -16,35 +14,11 @@ import {
 import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
-const MOCK_FEEDBACKS = [
-  {
-    id: "1",
-    tableNumber: "4",
-    rating: 5,
-    tags: ["خدمة سريعة", "جودة ممتازة", "تعامل راقي"],
-    comment: "الأكل طازج وسريع جداً، والتعامل من الطاقم كان ممتاز. شكراً لكم!",
-    createdAt: "منذ 10 دقائق",
-  },
-  {
-    id: "2",
-    tableNumber: "12",
-    rating: 2,
-    tags: ["تأخير في الطلب", "المكان مزدحم"],
-    comment: "الطلب تأخر أكثر من 30 دقيقة رغم إن الطاولة كانت محجوزة.",
-    createdAt: "منذ 45 دقيقة",
-  },
-  {
-    id: "3",
-    tableNumber: "7",
-    rating: 4,
-    tags: ["جودة ممتازة"],
-    comment: "",
-    createdAt: "منذ ساعتين",
-  },
-];
+// CONTEXTS
+import { useFeedbacks } from "../../context/FeedbackContext";
 
 function Feedbacks() {
-  const [feedbacks] = useState(MOCK_FEEDBACKS);
+  const { feedbacks } = useFeedbacks(); // جلب البيانات الديناميكية من الـ Context
 
   return (
     <Box
@@ -57,7 +31,6 @@ function Feedbacks() {
         gap: 5,
       }}
     >
-      {/* الهيدر العلوي للقسم */}
       <Box
         sx={{
           display: "flex",
@@ -86,7 +59,6 @@ function Feedbacks() {
         </Typography>
       </Box>
 
-      {/* شبكة الكروت */}
       <Grid container spacing={2.5}>
         {feedbacks.map((item) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.id}>
@@ -112,24 +84,28 @@ function Feedbacks() {
                   p: 2.5,
                   display: "flex",
                   flexDirection: "column",
-                  gap: 2, // تباعد موحد بين العناصر الداخلية
+                  gap: 2,
                   height: "100%",
                 }}
               >
-                {/* 1. رأس الكرت: رقم الطاولة يمين والوقت يسار */}
                 <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
                 >
-                  <Stack direction="row" alignItems="center" spacing={1.2}>
+                  <Stack
+                    direction="row"
+                    sx={{ alignItems: "center", gap: 1.2 }}
+                  >
                     <Box
                       sx={{
                         width: 38,
                         height: 38,
                         borderRadius: "10px",
-                        bgcolor: "#fff7ed", // برتقالي خفيف جداً يتماشى مع TAPPO
-                        color: "#ff6b00",
+                        bgcolor: "background.default",
+                        color: "primary.main",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -139,8 +115,7 @@ function Feedbacks() {
                     </Box>
                     <Typography
                       variant="subtitle1"
-                      fontWeight="700"
-                      color="#1e293b"
+                      sx={{ fontWeight: "700", color: "text.primary" }}
                     >
                       طاولة {item.tableNumber}
                     </Typography>
@@ -148,19 +123,20 @@ function Feedbacks() {
 
                   <Stack
                     direction="row"
-                    alignItems="center"
-                    spacing={0.5}
-                    color="#94a3b8"
+                    sx={{
+                      alignItems: "center",
+                      gap: 0.5,
+                      color: "text.secondary",
+                    }}
                   >
                     <AccessTimeIcon sx={{ fontSize: 15 }} />
-                    <Typography variant="caption" fontWeight="500">
+                    <Typography variant="caption" sx={{ fontWeight: "500" }}>
                       {item.createdAt}
                     </Typography>
                   </Stack>
                 </Box>
 
-                {/* 2. النجوم والتقييم */}
-                <Box display="flex" alignItems="center" gap={1}>
+                <Box sx={{ display: "flex", alignItems: "start", gap: 1 }}>
                   <Rating
                     value={item.rating}
                     readOnly
@@ -170,16 +146,14 @@ function Feedbacks() {
                   />
                   <Typography
                     variant="caption"
-                    fontWeight="700"
-                    color="#64748b"
+                    sx={{ fontWeight: "700", color: "text.secondary" }}
                   >
                     ({item.rating}/5)
                   </Typography>
                 </Box>
 
-                {/* 3. الوسوم (Tags) */}
                 {item.tags && item.tags.length > 0 && (
-                  <Stack direction="row" flexWrap="wrap" gap={0.8}>
+                  <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.8 }}>
                     {item.tags.map((tag, idx) => (
                       <Chip
                         key={idx}
@@ -198,21 +172,23 @@ function Feedbacks() {
                   </Stack>
                 )}
 
-                {/* 4. نص الملاحظة (إن وجد) */}
                 {item.comment && (
                   <Box
                     sx={{
-                      mt: "auto", // يضمن المحاذاة لأسفل الكرت دائماً
+                      mt: "auto",
                       p: 1.8,
                       borderRadius: "10px",
                       backgroundColor: "#f8fafc",
-                      borderRight: "3px solid #ff6b00", // خط أصفر/برتقالي جانبي نظيف
+                      borderRight: "3px solid #ff6b00",
                     }}
                   >
                     <Typography
                       variant="body2"
-                      color="#334155"
-                      sx={{ lineHeight: 1.6, textAlign: "right" }}
+                      sx={{
+                        lineHeight: 1.6,
+                        textAlign: "right",
+                        color: "text.primary",
+                      }}
                     >
                       "{item.comment}"
                     </Typography>

@@ -11,6 +11,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 // CONTEXTS
 import { useUser } from "../../context/UserContext"; 
+import { useWaiterCalls } from "../../context/WaiterCallsContext";
 
 const currentDate = new Date().toLocaleDateString("ar-EG", {
   weekday: "long",
@@ -33,9 +34,12 @@ function stringAvatar(name) {
   };
 }
 
-function DashboardHeader({ notificationsCount = 0 }) {
+function DashboardHeader({ handleNotificationOpen }) {
   const { user } = useUser();
   const userName = user?.name || "Cashier";
+
+  const {calls} = useWaiterCalls();
+  const notificationsCount = calls.length;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -75,8 +79,9 @@ function DashboardHeader({ notificationsCount = 0 }) {
         </Box>
 
         {/* الإشعارات والبروفايل */}
-        <Stack direction="row" spacing={4} alignItems="end">
+        <Stack direction="row" sx={{alignItems: "end", gap: 1}}>
           <IconButton
+            onClick={() => handleNotificationOpen()}
             sx={{
               color: "text.secondary",
               border: "1px solid",

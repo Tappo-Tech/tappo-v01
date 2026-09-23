@@ -122,7 +122,7 @@ function Menu() {
       <CartDrawer open={isCartOpen} close={handleCartClose} />
 
       {/* REVIEW SECTION */}
-      <ReviewSection open={reviewOpen} close={handleReviewClose} />
+      <ReviewSection open={reviewOpen} close={handleReviewClose} tableNumber={tableNumber}/>
 
       {/* CALLING WAITER CONFIRMATION */}
       <CallWaiterConfirm open={callingWaiterConfirmation} close={handleCallingWaiterConfirmationClose} tableNumber={tableNumber} />

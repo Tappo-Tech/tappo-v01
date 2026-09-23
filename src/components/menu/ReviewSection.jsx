@@ -17,7 +17,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import StarIcon from "@mui/icons-material/Star";
 
-// قائمة الوسوم السريعة
+// OTHERS
+import { v4 as uuidV4 } from "uuid";
+
+// CONTEXTS
+import { useFeedbacks } from "../../context/FeedbackContext";
+
 const QUICK_TAGS = [
   "خدمة سريعة",
   "جودة ممتازة",
@@ -26,21 +31,40 @@ const QUICK_TAGS = [
   "تعامل راقي",
 ];
 
-function ReviewSection({ open, close }) {
+function ReviewSection({ open, close, tableNumber }) {
+  const { addFeedback } = useFeedbacks(); 
   const [rating, setRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState([]);
   const [comment, setComment] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // التعامل مع اختيار أو إلغاء اختيار الوسوم
   const handleTagToggle = (tag) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
-  // إرسال التقييم
   const handleSubmit = () => {
+    if (rating === 0) return;
+
+    const currentTime = new Date().toLocaleTimeString("ar-EG", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+    // بناء كائن التقييم الجديد
+    const newFeedback = {
+      id: uuidV4(),
+      tableNumber: tableNumber || "1",
+      rating: rating,
+      tags: selectedTags,
+      comment: comment,
+      createdAt: currentTime,
+    };
+
+    // حفظ التقييم في Context
+    addFeedback(newFeedback);
     setIsSubmitted(true);
 
     setTimeout(() => {
@@ -63,11 +87,11 @@ function ReviewSection({ open, close }) {
       disableSwipeToOpen={true}
       slotProps={{
         paper: {
-          dir: "rtl", // تفعيل الاتجاه العربي للنافذة بالكامل
+          dir: "rtl",
           sx: {
             borderTopLeftRadius: "24px",
             borderTopRightRadius: "24px",
-            maxHeight: "85dvh", // جعل الارتفاع مرناً بحسب المحتوى بدلاً من height ثابت
+            maxHeight: "85dvh",
             backgroundColor: "background.paper",
           },
         },
@@ -81,7 +105,6 @@ function ReviewSection({ open, close }) {
           boxSizing: "border-box",
         }}
       >
-        {/* المؤشر الرمادي العلوي (Drag Handle) */}
         <Box
           sx={{
             width: "45px",
@@ -96,7 +119,6 @@ function ReviewSection({ open, close }) {
 
         {!isSubmitted ? (
           <>
-            {/* الهيدر */}
             <Box
               sx={{
                 display: "flex",
@@ -107,7 +129,7 @@ function ReviewSection({ open, close }) {
                 flexShrink: 0,
               }}
             >
-              <Typography variant="h5" fontWeight="bold">
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 شاركنا رأيك
               </Typography>
               <IconButton
@@ -119,17 +141,15 @@ function ReviewSection({ open, close }) {
               </IconButton>
             </Box>
 
-            {/* منطقة المحتوى الدناميكية */}
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 2.5, // مسافة ثابته ومنتظمة بين العناصر
+                gap: 2.5,
                 py: 1,
                 overflowY: "auto",
               }}
             >
-              {/* قسم التقييم بالنجوم */}
               <Box
                 sx={{
                   display: "flex",
@@ -140,8 +160,7 @@ function ReviewSection({ open, close }) {
               >
                 <Typography
                   variant="body1"
-                  color="text.secondary"
-                  fontWeight="500"
+                  sx={{ color: "text.secondary", fontWeight: "500" }}
                 >
                   كيف كانت تجربتك اليوم؟
                 </Typography>
@@ -156,7 +175,6 @@ function ReviewSection({ open, close }) {
                 />
               </Box>
 
-              {/* الوسوم السريعة (تظهر فقط عند تقييم النجوم) */}
               {rating > 0 && (
                 <Box
                   sx={{
@@ -172,9 +190,7 @@ function ReviewSection({ open, close }) {
                       label={tag}
                       clickable
                       onClick={() => handleTagToggle(tag)}
-                      color={
-                        selectedTags.includes(tag) ? "primary" : "default"
-                      }
+                      color={selectedTags.includes(tag) ? "primary" : "default"}
                       variant={
                         selectedTags.includes(tag) ? "filled" : "outlined"
                       }
@@ -189,7 +205,6 @@ function ReviewSection({ open, close }) {
                 </Box>
               )}
 
-              {/* مربع النص الإضافي */}
               <TextField
                 fullWidth
                 multiline
@@ -207,7 +222,6 @@ function ReviewSection({ open, close }) {
               />
             </Box>
 
-            {/* زر الإرسال */}
             <Button
               fullWidth
               variant="contained"
@@ -228,7 +242,6 @@ function ReviewSection({ open, close }) {
             </Button>
           </>
         ) : (
-          /* رسالة الشكر */
           <Box
             sx={{
               display: "flex",
@@ -240,7 +253,7 @@ function ReviewSection({ open, close }) {
           >
             <Typography
               variant="h5"
-              fontWeight="bold"
+              sx={{ fontWeight: "bold" }}
               color="primary"
               gutterBottom
             >
@@ -248,8 +261,7 @@ function ReviewSection({ open, close }) {
             </Typography>
             <Typography
               variant="body1"
-              color="text.secondary"
-              textAlign="center"
+              sx={{ color: "text.secondary", textAlign: "center" }}
             >
               تم استلام رأيك بنجاح، ونتمنى نشوفك قريباً.
             </Typography>

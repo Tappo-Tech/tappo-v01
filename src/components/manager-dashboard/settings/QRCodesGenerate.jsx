@@ -102,7 +102,7 @@ function QRCodeGenerate() {
           <QrCode2Icon color="primary" sx={{ fontSize: 32 }} />
           <Box>
             <Typography
-              variant="h5"
+              variant="h6"
               component="h1"
               sx={{
                 fontWeight: 800,
@@ -114,7 +114,7 @@ function QRCodeGenerate() {
               توليد رموز QR للطاولات
             </Typography>
             <Typography
-              variant="subtitle1"
+              variant="body1"
               sx={{
                 color: "text.secondary",
                 fontWeight: 600,

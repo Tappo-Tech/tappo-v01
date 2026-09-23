@@ -15,9 +15,11 @@ import {
 // ICONS
 import CloseIcon from "@mui/icons-material/Close";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
-// خيارات أسباب النداء السريعة
+// CONTEXTS
+import { useWaiterCalls } from "../../context/WaiterCallsContext";
+
 const REASON_OPTIONS = [
   "طلب الفاتورة ",
   "مساعدة في الطلب ",
@@ -30,21 +32,22 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
   const [isSent, setIsSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // اختيار أو إلغاء اختيار السبب
+  const { addCall } = useWaiterCalls(); // <-- استخدام دالة إضافة النداء
+
   const handleReasonToggle = (reason) => {
     setSelectedReason((prev) => (prev === reason ? "" : reason));
   };
 
-  // تأكيد إرسال النداء
   const handleConfirm = () => {
     setLoading(true);
 
-    // محاكاة إرسال الإشعار للكاشير
+    // إضافة النداء للكونتكست
+    addCall(tableNumber, selectedReason);
+
     setTimeout(() => {
       setLoading(false);
       setIsSent(true);
 
-      // إغلاق النافذة وإعادة ضبط الحالة
       setTimeout(() => {
         if (close) close();
         setTimeout(() => {
@@ -52,7 +55,7 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
           setSelectedReason("");
         }, 300);
       }, 1500);
-    }, 600);
+    }, 400);
   };
 
   return (
@@ -80,9 +83,9 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
           display: "flex",
           flexDirection: "column",
           boxSizing: "border-box",
+          gap: 3,
         }}
       >
-        {/* Drag Handle */}
         <Box
           sx={{
             width: "45px",
@@ -97,14 +100,14 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
 
         {!isSent ? (
           <>
-            {/* Header */}
             <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={2}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 استدعاء الجرسون
               </Typography>
               <IconButton
@@ -116,7 +119,6 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
               </IconButton>
             </Box>
 
-            {/* Content */}
             <Stack spacing={2.5} sx={{ py: 1 }}>
               <Box display="flex" alignItems="center" gap={2}>
                 <Box
@@ -130,20 +132,19 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
                     justifyContent: "center",
                   }}
                 >
-                  <NotificationsActiveIcon fontSize="medium" />
+                  <NotificationsActiveIcon fontSize="large" />
                 </Box>
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold">
+                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                     طاولة رقم {tableNumber}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     اختر سبب الاستدعاء ليصل إشعار واضح للكاشير
                   </Typography>
                 </Box>
               </Box>
 
-              {/* Chips */}
-              <Box display="flex" flexWrap="wrap" gap={1}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                 {REASON_OPTIONS.map((reason) => (
                   <Chip
                     key={reason}
@@ -163,7 +164,6 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
               </Box>
             </Stack>
 
-            {/* Confirm Button */}
             <Button
               fullWidth
               variant="contained"
@@ -183,25 +183,25 @@ function CallWaiterConfirm({ open, close, tableNumber = "1" }) {
             </Button>
           </>
         ) : (
-          /* Success State */
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            py={4}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              py: 6,
+            }}
           >
             <CheckCircleOutlinedIcon
               color="success"
               sx={{ fontSize: "4rem", mb: 1.5 }}
             />
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }} gutterBottom>
               تم استدعاء الجرسون!
             </Typography>
             <Typography
               variant="body2"
-              color="text.secondary"
-              textAlign="center"
+              sx={{ color: "text.secondary", textAlign: "center" }}
             >
               الجرسون في طريقه لطاولتك الآن.
             </Typography>
