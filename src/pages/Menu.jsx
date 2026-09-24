@@ -8,6 +8,7 @@ import NotFound from "../components/NotFound";
 import FloatingActions from "../components/menu/FloatingActions";
 import ReviewSection from "../components/menu/ReviewSection";
 import CallWaiterConfirm from "../components/menu/CallWaiterConfirm";
+import SuggestionBanner from "../components/menu/SuggestionBanner";
 
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
@@ -114,6 +115,9 @@ function Menu() {
         handleReview={handleReviewOpen}
         handleCallWaiter={handleCallingWaiterConfirmationOpen}
       />
+
+      {/* SUGGESTION BANNER */}
+      <SuggestionBanner />
 
       {/* SHOWING CART BUTTON */}
       <FloatingCartBar handleCartOpen={handleCartOpen} />

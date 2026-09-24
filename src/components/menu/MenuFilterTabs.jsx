@@ -5,7 +5,7 @@ import { ToggleButton, ToggleButtonGroup, Box } from "@mui/material";
 import { useMenu } from "../../context/MenuContext";
 
 function MenuFilterTabs() {
-  const { categoriesList, selectedCategories, handleAlignment } = useMenu();
+  const { categoriesList = [], selectedCategories, handleAlignment } = useMenu();
 
   const filterTabs = categoriesList.map((category) => (
     <ToggleButton key={category.id} value={category.id}>

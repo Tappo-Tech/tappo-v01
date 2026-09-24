@@ -6,7 +6,7 @@ import AddItemDrawer from "./AddItemDrawer";
 
 // MUI COMPONENTS
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid"; 
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -17,20 +17,42 @@ import CardActions from "@mui/material/CardActions";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Chip from "@mui/material/Chip";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import CategoryIcon from "@mui/icons-material/Category";
+import CloseIcon from "@mui/icons-material/Close";
+
+// OTHERS
+import { v4 as uuidV4 } from "uuid";
 
 function MenuControl() {
   const [isOpen, setIsOpen] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
 
+  // حالات إدارة التصنيفات/الفلاتر
+  const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [newCategoryTitle, setNewCategoryTitle] = useState("");
+  const [editingCategory, setEditingCategory] = useState(null);
+
   const {
     filteredMenu = [],
+    categoriesList = [],
     searchQuery,
     setSearchQuery,
     deleteItem,
     toggleAvailable,
+    addCategory,      // دالة إضافة تصنيف في Context
+    updateCategory,   // دالة تعديل تصنيف في Context
+    deleteCategory,   // دالة حذف تصنيف في Context
   } = useMenu();
 
   const handleOpenAdd = () => {
@@ -46,6 +68,36 @@ function MenuControl() {
   const handleDrawerClose = () => {
     setIsOpen(false);
     setItemToEdit(null);
+  };
+
+  // معالجة حفظ تصنيف جديد أو تعديله
+  const handleSaveCategory = () => {
+    if (!newCategoryTitle.trim()) return;
+
+    if (editingCategory) {
+      if (updateCategory) {
+        updateCategory({ ...editingCategory, title: newCategoryTitle.trim() });
+      }
+      setEditingCategory(null);
+    } else {
+      if (addCategory) {
+        addCategory({
+          id: uuidV4(),
+          title: newCategoryTitle.trim(),
+        });
+      }
+    }
+    setNewCategoryTitle("");
+  };
+
+  const handleStartEditCategory = (cat) => {
+    setEditingCategory(cat);
+    setNewCategoryTitle(cat.title);
+  };
+
+  const handleCancelCategoryEdit = () => {
+    setEditingCategory(null);
+    setNewCategoryTitle("");
   };
 
   return (
@@ -69,19 +121,34 @@ function MenuControl() {
           sx={{ width: { xs: "100%", sm: 300 } }}
         />
 
-        <Button
-          onClick={handleOpenAdd}
-          variant="contained"
-          startIcon={<AddIcon />}
-          sx={{
-            bgcolor: "primary.main",
-            fontWeight: 700,
-            borderRadius: "8px",
-            px: 2.5,
-          }}
-        >
-          إضافة صنف جديد
-        </Button>
+        <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
+          <Button
+            onClick={() => setCategoryModalOpen(true)}
+            variant="outlined"
+            startIcon={<CategoryIcon />}
+            sx={{
+              fontWeight: 700,
+              borderRadius: "8px",
+              px: 2,
+            }}
+          >
+            إدارة التصنيفات والفلاتر
+          </Button>
+
+          <Button
+            onClick={handleOpenAdd}
+            variant="contained"
+            startIcon={<AddIcon />}
+            sx={{
+              bgcolor: "primary.main",
+              fontWeight: 700,
+              borderRadius: "8px",
+              px: 2.5,
+            }}
+          >
+            إضافة صنف جديد
+          </Button>
+        </Box>
       </Box>
 
       {/* CARDS GRID */}
@@ -126,11 +193,30 @@ function MenuControl() {
                   </Typography>
                   <Typography
                     variant="subtitle1"
-                    sx={{ fontWeight: 700, color: "primary.main", whiteSpace: "nowrap" }}
+                    sx={{
+                      fontWeight: 700,
+                      color: "primary.main",
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     ر.س {Number(product.price || 0).toFixed(2)}
                   </Typography>
                 </Box>
+
+                {/* عرض وسوم التوافق إن وجدت */}
+                {product.tags && product.tags.length > 0 && (
+                  <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap", mb: 1 }}>
+                    {product.tags.map((tag, idx) => (
+                      <Chip
+                        key={idx}
+                        label={tag}
+                        size="small"
+                        variant="outlined"
+                        sx={{ fontSize: "0.65rem", height: 20 }}
+                      />
+                    ))}
+                  </Box>
+                )}
 
                 <Typography
                   variant="body2"
@@ -202,6 +288,96 @@ function MenuControl() {
         onClose={handleDrawerClose}
         itemToEdit={itemToEdit}
       />
+
+      {/* DIALOG إدﺍﺭﺓ التصنيفات والفلاتر */}
+      <Dialog
+        open={isCategoryModalOpen}
+        onClose={() => setCategoryModalOpen(false)}
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            fontWeight: 700,
+          }}
+        >
+          إدارة فلاتر المنيو والتصنيفات
+          <IconButton size="small" onClick={() => setCategoryModalOpen(false)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent dividers>
+          {/* حقل إضافة / تعديل تصنيف */}
+          <Box sx={{ display: "flex", gap: 1, mb: 3 }}>
+            <TextField
+              size="small"
+              fullWidth
+              label={editingCategory ? "تعديل اسم التصنيف" : "إضافة تصنيف جديد"}
+              placeholder="مثال: مشروبات باردة، حلويات..."
+              value={newCategoryTitle}
+              onChange={(e) => setNewCategoryTitle(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={handleSaveCategory}
+              sx={{ whiteSpace: "nowrap", fontWeight: 700 }}
+            >
+              {editingCategory ? "حفظ" : "إضافة"}
+            </Button>
+            {editingCategory && (
+              <Button color="inherit" onClick={handleCancelCategoryEdit}>
+                إلغاء
+              </Button>
+            )}
+          </Box>
+
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
+            التصنيفات الحالية ({categoriesList.length}):
+          </Typography>
+
+          <List disablePadding sx={{ maxHeight: 240, overflowY: "auto" }}>
+            {categoriesList.map((cat) => (
+              <ListItem
+                key={cat.id}
+                sx={{
+                  border: "1px solid",
+                  borderColor: "divider",
+                  borderRadius: 1.5,
+                  mb: 1,
+                  py: 0.5,
+                }}
+                secondaryAction={
+                  <Box>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleStartEditCategory(cat)}
+                    >
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={() => deleteCategory && deleteCategory(cat.id)}
+                    >
+                      <DeleteOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                }
+              >
+                <ListItemText primary={cat.title} />
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={() => setCategoryModalOpen(false)}>إغلاق</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

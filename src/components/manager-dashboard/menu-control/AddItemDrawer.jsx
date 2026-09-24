@@ -29,6 +29,17 @@ const COMMON_ALLERGENS = [
   "سمسم",
 ];
 
+// وسوم الاقتراحات والتوافق المحددة مسبقاً
+const SUGGESTION_TAGS = [
+  "يناسب المشروبات الساخنة",
+  "يناسب المشروبات الباردة",
+  "حلويات خفيفة",
+  "وجبات سريعة",
+  "الأكثر مبيعاً",
+  "مقترحات الشيف",
+  "بديل صحي",
+];
+
 const VisuallyHiddenInput = styled("input")({
   clipPath: "inset(50%)",
   height: 1,
@@ -47,6 +58,8 @@ const INITIAL_FORM_STATE = {
   description: "",
   image: "",
   allergens: [],
+  tags: [], // إضافة مصفوفة الوسوم
+  available: true,
 };
 
 function AddItemDrawer({ open, onClose, itemToEdit = null }) {
@@ -62,6 +75,8 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
         description: itemToEdit.description || "",
         image: itemToEdit.image || "",
         allergens: itemToEdit.allergens || [],
+        tags: itemToEdit.tags || [], // تحميل الوسوم المسجلة
+        available: itemToEdit.available ?? true,
       });
     } else {
       setFormData(INITIAL_FORM_STATE);
@@ -95,6 +110,8 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
       description: formData.description,
       image: formData.image || "/logo-icon.png",
       allergens: formData.allergens,
+      tags: formData.tags, // حفظ مصفوفة الوسوم
+      available: formData.available,
     };
 
     if (itemToEdit) {
@@ -106,7 +123,6 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
       addNewItem({
         id: uuidV4(),
         ...payload,
-        available: true,
         quantity: 1,
       });
     }
@@ -220,6 +236,42 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
           )}
         </Box>
 
+        {/* وسوم الاقتراحات والتوافق */}
+        <Autocomplete
+          multiple
+          freeSolo
+          options={SUGGESTION_TAGS}
+          value={formData.tags}
+          onChange={(_, newValue) => {
+            setFormData((prev) => ({ ...prev, tags: newValue }));
+          }}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => {
+              const { key, ...tagProps } = getTagProps({ index });
+              return (
+                <Chip
+                  key={key}
+                  label={option}
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  {...tagProps}
+                />
+              );
+            })
+          }
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              size="small"
+              label="وسوم الاقتراحات والتوافق"
+              placeholder="اختر أو اكتب وسم..."
+            />
+          )}
+          fullWidth
+        />
+
+        {/* المواد المسببة للحساسية */}
         <Autocomplete
           multiple
           options={COMMON_ALLERGENS}
@@ -231,12 +283,7 @@ function AddItemDrawer({ open, onClose, itemToEdit = null }) {
             value.map((option, index) => {
               const { key, ...tagProps } = getTagProps({ index });
               return (
-                <Chip
-                  key={key}
-                  label={option}
-                  size="small"
-                  {...tagProps}
-                />
+                <Chip key={key} label={option} size="small" {...tagProps} />
               );
             })
           }

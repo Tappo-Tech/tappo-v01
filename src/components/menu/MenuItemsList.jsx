@@ -3,16 +3,32 @@ import MenuItemCard from "./MenuItemCard";
 
 // MUI COMPONENTS
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography"; // اختياري لمعالجة القائمة الفارغة
 
 // DATA
 import { useMenu } from "../../context/MenuContext";
 import { useCart } from "../../context/CartContext";
 
 function MenuItemsList() {
-  const { filteredMenu } = useMenu();
+  // 1. التغيير هنا: استدعاء customerMenu المجهزة بالأصناف المتوفرة فقط
+  const { customerMenu } = useMenu();
   const { cartItems } = useCart();
 
-  const ItemList = filteredMenu.map((item) => (
+  // 2. تحسين اختياري: رسالة بسيطة في حال عدم وجود أصناف متوفرة بالقسم المحدد
+  if (!customerMenu || customerMenu.length === 0) {
+    return (
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        sx={{ py: 6, fontWeight: 500 }}
+      >
+        لا توجد أصناف متوفرة حالياً في هذا القسم.
+      </Typography>
+    );
+  }
+
+  const ItemList = customerMenu.map((item) => (
     <MenuItemCard key={item.id} itemDetails={item} />
   ));
 
